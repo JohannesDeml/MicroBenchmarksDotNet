@@ -10,6 +10,7 @@
 
 using System;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
@@ -28,10 +29,7 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			data = new byte[ArraySize];
-
-			var rnd = new Random(Seed);
-			rnd.NextBytes(data);
+			data = ValuesGenerator.Array<byte>(ArraySize);
 		}
 
 		[Benchmark(Baseline = true)]

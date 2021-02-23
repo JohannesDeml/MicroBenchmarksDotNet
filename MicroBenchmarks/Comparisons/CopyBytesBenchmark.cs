@@ -10,6 +10,7 @@
 
 using System;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
@@ -20,8 +21,6 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class CopyBytesBenchmark
 	{
-		public const int Seed = 1337;
-
 		[Params(10, 100, 1000, 10000)]
 		public int ArraySize { get; set; }
 
@@ -31,11 +30,8 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			sourceArray = new byte[ArraySize];
+			sourceArray = ValuesGenerator.Array<byte>(ArraySize);
 			destinationArray = new byte[ArraySize];
-
-			Random rnd = new Random(Seed);
-			rnd.NextBytes(sourceArray);
 		}
 
 		[Benchmark(Baseline = true)]

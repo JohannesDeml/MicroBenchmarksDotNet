@@ -11,6 +11,7 @@
 using System;
 using System.Security.Cryptography;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
@@ -18,8 +19,6 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class HashGenerationBenchmark
 	{
-		public const int Seed = 1337;
-
 		[Params(10, 100, 1000)]
 		public int ArraySize { get; set; }
 
@@ -33,9 +32,7 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			data = new byte[ArraySize];
-			Random rnd = new Random(Seed);
-			rnd.NextBytes(data);
+			data = ValuesGenerator.Array<byte>(ArraySize);
 
 			md5Provider = new MD5CryptoServiceProvider();
 			sha1Provider = new SHA1CryptoServiceProvider();

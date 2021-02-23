@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
@@ -29,15 +30,11 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			var startCollection = new byte[CollectionSize];
-			for (int i = 0; i < startCollection.Length; i++)
-			{
-				startCollection[i] = (byte)i;
-			}
+			var collection = ValuesGenerator.Array<byte>(CollectionSize);
 
-			concurrentBag = new ConcurrentBag<byte>(startCollection);
-			concurrentStack = new ConcurrentStack<byte>(startCollection);
-			concurrentQueue = new ConcurrentQueue<byte>(startCollection);
+			concurrentBag = new ConcurrentBag<byte>(collection);
+			concurrentStack = new ConcurrentStack<byte>(collection);
+			concurrentQueue = new ConcurrentQueue<byte>(collection);
 		}
 
 		[Benchmark]
