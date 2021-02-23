@@ -15,8 +15,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using BenchmarkDotNet.Attributes;
+using MicroBenchmarks.Extensions;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks
 {
 	/// <summary>
 	/// Testing different pause/sleep/time logics for their accuracy for small durations

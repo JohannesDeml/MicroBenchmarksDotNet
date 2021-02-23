@@ -11,8 +11,9 @@
 using System;
 using System.Diagnostics;
 using BenchmarkDotNet.Attributes;
+using MicroBenchmarks.Extensions;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks
 {
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class TimeMeasurementBenchmark
@@ -36,7 +37,7 @@ namespace CommonBenchmarks
 			stopwatch = new Stopwatch();
 			return stopwatch;
 		}
-		
+
 		[Benchmark]
 		[BenchmarkCategory("Creation")]
 		public DateTime CreateDateTime()
@@ -44,7 +45,7 @@ namespace CommonBenchmarks
 			dateTime = DateTime.UtcNow;
 			return dateTime;
 		}
-		
+
 		[Benchmark]
 		[BenchmarkCategory("Creation")]
 		public DateTimeOffset CreateDateTimeOffset()
@@ -62,7 +63,7 @@ namespace CommonBenchmarks
 			var elapsed = stopwatch.ElapsedMilliseconds;
 			return elapsed;
 		}
-		
+
 		[Benchmark]
 		[BenchmarkCategory("TimeDifference")]
 		public double DateTimeDifference()
@@ -70,7 +71,7 @@ namespace CommonBenchmarks
 			var elapsed = (dateTime-DateTime.UtcNow).TotalMilliseconds;
 			return elapsed;
 		}
-		
+
 		[Benchmark]
 		[BenchmarkCategory("TimeDifference")]
 		public double DateTimeOffsetDifference()

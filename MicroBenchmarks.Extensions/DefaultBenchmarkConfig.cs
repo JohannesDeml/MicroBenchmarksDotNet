@@ -13,8 +13,9 @@ using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Jobs;
+using Perfolizer.Horology;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks.Extensions
 {
 	public class DefaultBenchmarkConfig : ManualConfig
 	{
@@ -24,6 +25,10 @@ namespace CommonBenchmarks
 
 			var baseJob = Job.Default
 				.WithUnrollFactor(16)
+				.WithWarmupCount(1)
+				.WithIterationTime(TimeInterval.FromMilliseconds(250))
+				.WithMinIterationCount(15)
+				.WithMaxIterationCount(20)
 				.WithGcServer(true)
 				.WithGcConcurrent(true)
 				.WithGcForce(true);

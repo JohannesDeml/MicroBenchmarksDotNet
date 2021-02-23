@@ -10,8 +10,9 @@
 
 using System;
 using BenchmarkDotNet.Attributes;
+using MicroBenchmarks.Extensions;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks
 {
 	/// <summary>
 	/// Interesting to read: https://github.com/dotnet/runtime/issues/4847#issuecomment-167397458

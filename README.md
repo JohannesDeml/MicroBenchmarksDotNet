@@ -1,3 +1,3 @@
-# Common Benchmarks for C#
+# Micro Benchmarks for C#
 
-*Comparing execution times and pitfalls I find interesting*
+*A small, humble brother of [dotnet/performance benchmarks](https://github.com/dotnet/performance/tree/master/src/benchmarks/micro)*

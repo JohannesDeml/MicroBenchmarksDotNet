@@ -27,4 +27,12 @@
       <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="Config" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\MicroBenchmarks.Extensions\MicroBenchmarks.Extensions.csproj" />
+    </ItemGroup>
+    
 </Project>

@@ -10,8 +10,9 @@
 
 using System;
 using BenchmarkDotNet.Attributes;
+using MicroBenchmarks.Extensions;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks
 {
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class LoopComparisonBenchmark

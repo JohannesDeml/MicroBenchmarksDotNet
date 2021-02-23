@@ -15,7 +15,7 @@ using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks.Extensions
 {
 	/// <summary>
 	/// A simple column having one defined value for all cells
@@ -28,7 +28,7 @@ namespace CommonBenchmarks
 		/// Column showing the chunks server application version
 		/// </summary>
 		public static readonly FixedColumn VersionColumn =
-			new FixedColumn("Version", typeof(Program).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version);
+			new FixedColumn("Version", Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version);
 
 		/// <summary>
 		/// Column showing the used operating system

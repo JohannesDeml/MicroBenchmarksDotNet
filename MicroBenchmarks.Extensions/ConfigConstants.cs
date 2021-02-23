@@ -13,7 +13,7 @@ using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Reports;
 using Perfolizer.Horology;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks.Extensions
 {
 	public static class ConfigConstants
 	{

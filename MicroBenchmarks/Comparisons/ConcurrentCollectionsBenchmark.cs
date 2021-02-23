@@ -11,19 +11,20 @@
 using System;
 using System.Collections.Concurrent;
 using BenchmarkDotNet.Attributes;
+using MicroBenchmarks.Extensions;
 
-namespace CommonBenchmarks
+namespace MicroBenchmarks
 {
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class ConcurrentCollectionsBenchmark
 	{
 		[Params(16, 128, 1024)]
 		public int CollectionSize { get; set; }
-		
+
 		private ConcurrentBag<byte> concurrentBag;
 		private ConcurrentStack<byte> concurrentStack;
 		private ConcurrentQueue<byte> concurrentQueue;
-		
+
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
@@ -33,7 +34,7 @@ namespace CommonBenchmarks
 			{
 				startCollection[i] = (byte)i;
 			}
-			
+
 			concurrentBag = new ConcurrentBag<byte>(startCollection);
 			concurrentStack = new ConcurrentStack<byte>(startCollection);
 			concurrentQueue = new ConcurrentQueue<byte>(startCollection);
@@ -50,7 +51,7 @@ namespace CommonBenchmarks
 
 			throw new InvalidOperationException("Should not be empty");
 		}
-		
+
 		[Benchmark]
 		public byte RentReturnConcurrentStack()
 		{
@@ -62,7 +63,7 @@ namespace CommonBenchmarks
 
 			throw new InvalidOperationException("Should not be empty");
 		}
-		
+
 		[Benchmark]
 		public byte RentReturnConcurrentQueue()
 		{
