@@ -21,7 +21,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class CopyBytesBenchmark
 	{
-		[Params(10, 100, 1000, 10000)]
+		[Params(10, 100, 10000)]
 		public int ArraySize { get; set; }
 
 		private byte[] sourceArray;
@@ -38,6 +38,13 @@ namespace MicroBenchmarks
 		public byte[] ArrayCopy()
 		{
 			Array.Copy(sourceArray, 0, destinationArray, 0, ArraySize);
+			return destinationArray;
+		}
+
+		[Benchmark]
+		public byte[] ArrayCopyInstance()
+		{
+			sourceArray.CopyTo(destinationArray, 0);
 			return destinationArray;
 		}
 
