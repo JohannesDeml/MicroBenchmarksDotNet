@@ -38,20 +38,13 @@ namespace MicroBenchmarks.Extensions
 				.WithRuntime(CoreRuntime.Core50)
 				.WithPlatform(Platform.X64));
 
-			AddJob(baseJob
-				.WithRuntime(CoreRuntime.Core31)
-				.WithPlatform(Platform.X64));
+			// AddJob(baseJob
+			// 	.WithRuntime(CoreRuntime.Core31)
+			// 	.WithPlatform(Platform.X64));
 
 			AddJob(baseJob
 				.WithRuntime(new MonoRuntime("Unity Mono x64", @"C:\Program Files\Unity\2020.2.5f1\Editor\Data\MonoBleedingEdge\bin\mono.exe"))
 				.WithPlatform(Platform.X64));
-
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-			{
-				AddJob(baseJob
-					.WithRuntime(ClrRuntime.Net48)
-					.WithPlatform(Platform.X64));
-			}
 
 			AddColumn(FixedColumn.VersionColumn);
 			AddColumn(FixedColumn.OperatingSystemColumn);

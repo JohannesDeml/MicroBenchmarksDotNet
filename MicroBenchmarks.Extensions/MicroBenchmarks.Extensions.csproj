@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net48;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <RootNamespace>MicroBenchmarks.Extensions</RootNamespace>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
-        <DefineConstants>NET48</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
