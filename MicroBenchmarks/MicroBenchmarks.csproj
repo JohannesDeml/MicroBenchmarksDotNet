@@ -18,6 +18,10 @@
     <PropertyGroup Condition="'$(IsLinux)'=='true'">
         <DefineConstants>LINUX</DefineConstants>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+        <DefineConstants>NET48</DefineConstants>
+    </PropertyGroup>
     
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />

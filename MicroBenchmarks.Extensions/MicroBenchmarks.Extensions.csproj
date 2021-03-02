@@ -5,6 +5,10 @@
         <RootNamespace>MicroBenchmarks.Extensions</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+        <DefineConstants>NET48</DefineConstants>
+    </PropertyGroup>
+    
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
     </ItemGroup>

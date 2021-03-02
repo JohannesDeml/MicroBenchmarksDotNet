@@ -9,7 +9,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
@@ -43,7 +47,7 @@ namespace MicroBenchmarks.Extensions
 			// 	.WithRuntime(CoreRuntime.Core31)
 			// 	.WithPlatform(Platform.X64));
 
-			// See win-benchmark.bat as an example
+			// See win-benchmark.bat / linux-benchmark.sh
 			var monoUnityPath = Environment.GetEnvironmentVariable("MONO_UNITY");
 			if (monoUnityPath != null)
 			{
@@ -57,7 +61,6 @@ namespace MicroBenchmarks.Extensions
 					.WithRuntime(MonoRuntime.Default)
 					.WithPlatform(Platform.X64));
 			}
-
 
 			AddColumn(FixedColumn.VersionColumn);
 			AddColumn(FixedColumn.OperatingSystemColumn);

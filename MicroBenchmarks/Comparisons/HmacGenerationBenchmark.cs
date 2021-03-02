@@ -69,37 +69,55 @@ namespace MicroBenchmarks
 		}
 
 
-		// [Benchmark]
-		// public byte[] TryMd5Hmac()
-		// {
-		// 	if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-		// 	{
-		// 		return hashResult;
-		// 	}
-		//
-		// 	throw new InvalidOperationException("Error when computing HMAC");
-		// }
-		//
-		// [Benchmark]
-		// public byte[] TrySha1Hmac()
-		// {
-		// 	if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-		// 	{
-		// 		return hashResult;
-		// 	}
-		//
-		// 	throw new InvalidOperationException("Error when computing HMAC");
-		// }
-		//
-		// [Benchmark]
-		// public byte[] TrySha256Hmac()
-		// {
-		// 	if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-		// 	{
-		// 		return hashResult;
-		// 	}
-		//
-		// 	throw new InvalidOperationException("Error when computing HMAC");
-		// }
+		[Benchmark]
+		public byte[] TryMd5Hmac()
+		{
+			#if NET48
+			// Not supported
+			return null;
+			#else
+
+			if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+			{
+				return hashResult;
+			}
+
+			throw new InvalidOperationException("Error when computing HMAC");
+			#endif
+		}
+
+		[Benchmark]
+		public byte[] TrySha1Hmac()
+		{
+			#if NET48
+			// Not supported
+			return null;
+			#else
+
+			if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+			{
+				return hashResult;
+			}
+
+			throw new InvalidOperationException("Error when computing HMAC");
+			#endif
+		}
+
+		[Benchmark]
+		public byte[] TrySha256Hmac()
+		{
+			#if NET48
+			// Not supported
+			return null;
+			#else
+
+			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+			{
+				return hashResult;
+			}
+
+			throw new InvalidOperationException("Error when computing HMAC");
+			#endif
+		}
 	}
 }
