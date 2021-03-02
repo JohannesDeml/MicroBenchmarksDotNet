@@ -8,6 +8,7 @@
 // </author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
@@ -42,9 +43,15 @@ namespace MicroBenchmarks.Extensions
 			// 	.WithRuntime(CoreRuntime.Core31)
 			// 	.WithPlatform(Platform.X64));
 
-			AddJob(baseJob
-				.WithRuntime(new MonoRuntime("Unity Mono x64", @"C:\Program Files\Unity\2020.2.5f1\Editor\Data\MonoBleedingEdge\bin\mono.exe"))
-				.WithPlatform(Platform.X64));
+			// See win-benchmark.bat as an example
+			var monoUnityPath = Environment.GetEnvironmentVariable("MONO_UNITY");
+			if (monoUnityPath != null)
+			{
+				AddJob(baseJob
+					.WithRuntime(new MonoRuntime("Unity Mono x64", monoUnityPath))
+					.WithPlatform(Platform.X64));
+			}
+
 
 			AddColumn(FixedColumn.VersionColumn);
 			AddColumn(FixedColumn.OperatingSystemColumn);
