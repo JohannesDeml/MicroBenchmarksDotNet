@@ -63,55 +63,55 @@ namespace MicroBenchmarks
 		}
 
 
-		[Benchmark]
-		public byte[] TryMd5Hash()
-		{
-			#if NET48
-			// Not supported
-			return null;
-			#else
-
-			if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-			{
-				return hashResult;
-			}
-
-			throw new InvalidOperationException("Hash was not computed");
-			#endif
-		}
-
-		[Benchmark]
-		public byte[] TrySha1Hash()
-		{
-			#if NET48
-			// Not supported
-			return null;
-			#else
-
-			if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-			{
-				return hashResult;
-			}
-
-			throw new InvalidOperationException("Hash was not computed");
-			#endif
-		}
-
-		[Benchmark]
-		public byte[] TrySha256Hash()
-		{
-			#if NET48
-			// Not supported
-			return null;
-			#else
-
-			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
-			{
-				return hashResult;
-			}
-
-			throw new InvalidOperationException("Hash was not computed");
-			#endif
-		}
+		// [Benchmark]
+		// public byte[] TryMd5Hash()
+		// {
+		// 	#if NET48
+		// 	// Not supported
+		// 	return null;
+		// 	#else
+		//
+		// 	if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+		// 	{
+		// 		return hashResult;
+		// 	}
+		//
+		// 	throw new InvalidOperationException("Hash was not computed");
+		// 	#endif
+		// }
+		//
+		// [Benchmark]
+		// public byte[] TrySha1Hash()
+		// {
+		// 	#if NET48
+		// 	// Not supported
+		// 	return null;
+		// 	#else
+		//
+		// 	if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+		// 	{
+		// 		return hashResult;
+		// 	}
+		//
+		// 	throw new InvalidOperationException("Hash was not computed");
+		// 	#endif
+		// }
+		//
+		// [Benchmark]
+		// public byte[] TrySha256Hash()
+		// {
+		// 	#if NET48
+		// 	// Not supported
+		// 	return null;
+		// 	#else
+		//
+		// 	if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+		// 	{
+		// 		return hashResult;
+		// 	}
+		//
+		// 	throw new InvalidOperationException("Hash was not computed");
+		// 	#endif
+		// }
 	}
 }

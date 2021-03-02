@@ -51,6 +51,12 @@ namespace MicroBenchmarks.Extensions
 					.WithRuntime(new MonoRuntime("Unity Mono x64", monoUnityPath))
 					.WithPlatform(Platform.X64));
 			}
+			else
+			{
+				AddJob(baseJob
+					.WithRuntime(MonoRuntime.Default)
+					.WithPlatform(Platform.X64));
+			}
 
 
 			AddColumn(FixedColumn.VersionColumn);
