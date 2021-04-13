@@ -20,11 +20,12 @@ namespace MicroBenchmarks
 	/// Benchmark for context switches and overall thread handling.
 	/// The threads themselves move ints between two queues and yield after a queue is empty.
 	/// Scales with the CPU cores available, but is still very demanding.
+	/// 0 ThreadsPerCore results in one thread total to be run.
 	/// </summary>
 	[Config(typeof(HighDemandBenchmarkConfig))]
 	public class ThreadingBenchmark
 	{
-		[Params(1, 100)]
+		[Params(0, 10)]
 		public int ThreadsPerCore { get; set; }
 
 		public int BucketSize = 1_000;
@@ -57,8 +58,8 @@ namespace MicroBenchmarks
 		private void CreateClients()
 		{
 			clients = new List<Client>();
-			var clientCount = ThreadsPerCore * Environment.ProcessorCount;
-			var clientMoveTarget = MoveTargetPerCore / ThreadsPerCore;
+			var clientCount = Math.Max(ThreadsPerCore * Environment.ProcessorCount, 1);
+			var clientMoveTarget = MoveTargetPerCore /  Math.Max(ThreadsPerCore, 1);
 
 			for (int i = 0; i < clientCount; i++)
 			{
