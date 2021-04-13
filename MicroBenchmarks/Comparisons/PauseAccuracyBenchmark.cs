@@ -30,10 +30,10 @@ namespace MicroBenchmarks
 	public class PauseAccuracyBenchmark
 	{
 		/// <summary>
-		/// In milliseconds
+		/// Time to wait in milliseconds
 		/// </summary>
 		[Params(2, 5, 20)]
-		public int DurationGoal { get; set; }
+		public int TimeoutDuration { get; set; }
 
 		private Stopwatch sw;
 
@@ -108,11 +108,12 @@ namespace MicroBenchmarks
 			}
 		}
 
-		//[Benchmark]
+
+		[Benchmark]
 		public long ThreadSpinWait()
 		{
 			sw.Restart();
-			while (sw.ElapsedMilliseconds < DurationGoal)
+			while (sw.ElapsedMilliseconds < TimeoutDuration)
 			{
 				Thread.SpinWait(10);
 			}
@@ -120,11 +121,11 @@ namespace MicroBenchmarks
 			return sw.ElapsedMilliseconds;
 		}
 
-		//[Benchmark]
+		[Benchmark]
 		public long ThreadSleep0()
 		{
 			sw.Restart();
-			while (sw.ElapsedMilliseconds < DurationGoal)
+			while (sw.ElapsedMilliseconds < TimeoutDuration)
 			{
 				Thread.Sleep(0);
 			}
@@ -136,7 +137,7 @@ namespace MicroBenchmarks
 		public long ThreadSleep()
 		{
 			sw.Restart();
-			Thread.Sleep(DurationGoal);
+			Thread.Sleep(TimeoutDuration);
 			return sw.ElapsedMilliseconds;
 		}
 
@@ -147,7 +148,7 @@ namespace MicroBenchmarks
 				timeBeginPeriod(1);
 			#endif
 			sw.Restart();
-			Thread.Sleep(DurationGoal);
+			Thread.Sleep(TimeoutDuration);
 			#if WINDOWS
 				timeEndPeriod(1);
 			#endif
@@ -155,11 +156,11 @@ namespace MicroBenchmarks
 			return sw.ElapsedMilliseconds;
 		}
 
-		//[Benchmark]
+		[Benchmark]
 		public async Task<long> TaskDelay()
 		{
 			sw.Restart();
-			await Task.Delay(DurationGoal);
+			await Task.Delay(TimeoutDuration);
 			return sw.ElapsedMilliseconds;
 		}
 
@@ -170,7 +171,7 @@ namespace MicroBenchmarks
 		public void PrepareTimerWait()
 		{
 			PrepareBenchmark();
-			aTimer = new System.Timers.Timer(DurationGoal);
+			aTimer = new System.Timers.Timer(TimeoutDuration);
 			aTimer.Elapsed += (Object source, ElapsedEventArgs e) => { PauseAccuracyBenchmark.timerFinished = true; };
 			aTimer.AutoReset = false;
 			aTimer.Enabled = true;
@@ -184,7 +185,7 @@ namespace MicroBenchmarks
 			aTimer.Dispose();
 		}
 
-		//[Benchmark]
+		[Benchmark]
 		public long TimerWait()
 		{
 			sw.Restart();
@@ -195,6 +196,23 @@ namespace MicroBenchmarks
 			}
 
 			timerFinished = false;
+			return sw.ElapsedMilliseconds;
+		}
+
+		private AutoResetEvent timerEvent;
+
+		[GlobalSetup(Target = nameof(AutoResetEvent))]
+		public void PrepareTimerEvent()
+		{
+			PrepareBenchmark();
+			timerEvent = new AutoResetEvent(true);
+		}
+
+		[Benchmark]
+		public long AutoResetEvent()
+		{
+			sw.Restart();
+			timerEvent.WaitOne(TimeoutDuration);
 			return sw.ElapsedMilliseconds;
 		}
 	}
