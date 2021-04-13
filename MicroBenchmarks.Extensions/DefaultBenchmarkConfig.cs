@@ -38,9 +38,13 @@ namespace MicroBenchmarks.Extensions
 				.WithRuntime(CoreRuntime.Core50)
 				.WithPlatform(Platform.X64));
 
-			// AddJob(baseJob
-			// 	.WithRuntime(CoreRuntime.Core31)
-			// 	.WithPlatform(Platform.X64));
+			AddJob(baseJob
+				.WithRuntime(CoreRuntime.Core31)
+				.WithPlatform(Platform.X64));
+
+			AddJob(baseJob
+				.WithRuntime(ClrRuntime.Net48)
+				.WithPlatform(Platform.X64));
 
 			// See win-benchmark.bat / linux-benchmark.sh
 			var monoUnityPath = Environment.GetEnvironmentVariable("MONO_UNITY");

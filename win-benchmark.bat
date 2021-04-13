@@ -4,6 +4,6 @@
 
 SET MONO_UNITY=C:\Program Files\Unity\2020.3.3f1\Editor\Data\MonoBleedingEdge\bin\mono.exe
 
-dotnet build --configuration Release --framework net5.0 --output .\bin\MicroBenchmarks-Windows\
+dotnet build --configuration Release --framework net48 --output .\bin\MicroBenchmarks-Windows\
 .\bin\MicroBenchmarks-Windows\MicroBenchmarks
 PAUSE
