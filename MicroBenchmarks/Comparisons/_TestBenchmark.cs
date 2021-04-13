@@ -13,8 +13,11 @@ using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
+	/// <summary>
+	/// This benchmark is for quick testing if all target platforms compile and are working as expected
+	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
-	public class TestBenchmark
+	public class _TestBenchmark
 	{
 		[Benchmark]
 		public int InstantReturn()

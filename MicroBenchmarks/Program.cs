@@ -7,8 +7,7 @@ namespace MicroBenchmarks
 	{
 		private static int Main(string[] args)
 		{
-			// Run the test benchmark to see if all runtimes are working as expected
-			//BenchmarkRunner.Run<TestBenchmark>();
+			// Run the _TestBenchmark (0) to see if all platforms are working as expected
 
 			return BenchmarkSwitcher
 				.FromAssembly(typeof(Program).Assembly)
