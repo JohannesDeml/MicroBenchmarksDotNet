@@ -12,13 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Engines;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
-	[SimpleJob(RunStrategy.Monitoring, launchCount: 1, warmupCount: 3, targetCount: 15, invocationCount: 1)]
-	//[Config(typeof(DefaultBenchmarkConfig))]
+	/// <summary>
+	/// Benchmark for context switches and overall thread handling.
+	/// The threads themselves move ints between two queues and yield after a queue is empty.
+	/// Scales with the CPU cores available, but is still very demanding.
+	/// </summary>
+	[Config(typeof(HighDemandBenchmarkConfig))]
 	public class ThreadingBenchmark
 	{
 		[Params(1, 100)]

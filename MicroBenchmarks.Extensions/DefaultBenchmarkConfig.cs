@@ -24,15 +24,7 @@ namespace MicroBenchmarks.Extensions
 		{
 			Add(DefaultConfig.Instance);
 
-			var baseJob = Job.Default
-				.WithUnrollFactor(16)
-				.WithWarmupCount(1)
-				.WithIterationTime(TimeInterval.FromMilliseconds(250))
-				.WithMinIterationCount(15)
-				.WithMaxIterationCount(20)
-				.WithGcServer(true)
-				.WithGcConcurrent(true)
-				.WithGcForce(true);
+			var baseJob = DefineBaseJob();
 
 			AddJob(baseJob
 				.WithRuntime(CoreRuntime.Core50)
@@ -67,6 +59,19 @@ namespace MicroBenchmarks.Extensions
 
 			AddExporter(MarkdownExporter.GitHub);
 			AddExporter(new CsvExporter(CsvSeparator.Comma, ConfigConstants.CsvStyle));
+		}
+
+		protected virtual Job DefineBaseJob()
+		{
+			return Job.Default
+				.WithUnrollFactor(16)
+				.WithWarmupCount(1)
+				.WithIterationTime(TimeInterval.FromMilliseconds(250))
+				.WithMinIterationCount(15)
+				.WithMaxIterationCount(20)
+				.WithGcServer(true)
+				.WithGcConcurrent(true)
+				.WithGcForce(true);
 		}
 	}
 }
