@@ -157,7 +157,7 @@ namespace MicroBenchmarks
 					int element;
 					if (moveToSecond)
 					{
-						while (firstQueue.TryDequeue(out element))
+						while (TryDequeue(firstQueue, out element))
 						{
 							secondQueue.Enqueue(element);
 							itemsMoved++;
@@ -165,7 +165,7 @@ namespace MicroBenchmarks
 					}
 					else
 					{
-						while (secondQueue.TryDequeue(out element))
+						while (TryDequeue(secondQueue, out element))
 						{
 							firstQueue.Enqueue(element);
 							itemsMoved++;
@@ -191,6 +191,22 @@ namespace MicroBenchmarks
 					Thread.Sleep(1);
 				}
 			}
+		}
+
+		private bool TryDequeue<T>(Queue<T> queue, out T element)
+		{
+			#if NET48
+			if (queue.Count == 0)
+			{
+				element = default;
+				return false;
+			}
+
+			element = queue.Dequeue();
+			return true;
+			#else
+			return queue.TryDequeue(out element);
+			#endif
 		}
 	}
 }
