@@ -1,12 +1,32 @@
 # Micro Benchmarks for C#
 
 *Benchmarks for a better understanding of performance costs*
+[![Releases](https://img.shields.io/github/release/JohannesDeml/MicroBenchmarksDotNet/all.svg)](../../releases)
 
 
 
 ## Findings
 
+To reproduce the results, run `win-benchmark.bat` or `linux-benchmark.sh` as admin/root.  
+The benchmarks are run with 2020 gaming PC after bootup of the system - [Hardware Details](https://pcpartpicker.com/b/8MMcCJ)  
+
+```ini
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19042
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+  [Host]     : .NET Framework 4.8 (4.8.4341.0), X64 RyuJIT
+  Job-YCYQHD : .NET Framework 4.8 (4.8.4341.0), X64 RyuJIT
+  Job-ZUSNEY : .NET Core 3.1.9 (CoreCLR 4.700.20.47201, CoreFX 4.700.20.47203), X64 RyuJIT
+  Job-BBIORM : .NET Core 5.0.4 (CoreCLR 5.0.421.11614, CoreFX 5.0.421.11614), X64 RyuJIT
+  Job-OVYJNY : Mono 5.11.0 (Visual Studio), X86 
+
+Platform=X64  Concurrent=True  Force=True  
+Server=True  IterationTime=250.0000 ms  MaxIterationCount=20  
+MinIterationCount=15  UnrollFactor=16  WarmupCount=1  
+Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54  
+```
+
 ### Hash Generation
+
 ![Hash Generation Comparison Chart](./Docs/hashgeneration-windows10-1.0.0.png)
 
 * If you can, always use TryHash instead of Hash
