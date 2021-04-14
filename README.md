@@ -1,12 +1,9 @@
 # Micro Benchmarks for C#
 
-*Benchmarks for a better understanding of performance costs*
+*Benchmarks for a better understanding of performance costs*  
 [![Releases](https://img.shields.io/github/release/JohannesDeml/MicroBenchmarksDotNet/all.svg)](../../releases)
 
-
-
-## Findings
-
+## Setup
 To reproduce the results, run `win-benchmark.bat` or `linux-benchmark.sh` as admin/root.  
 The benchmarks are run with 2020 gaming PC after bootup of the system - [Hardware Details](https://pcpartpicker.com/b/8MMcCJ)  
 
@@ -24,6 +21,10 @@ Server=True  IterationTime=250.0000 ms  MaxIterationCount=20
 MinIterationCount=15  UnrollFactor=16  WarmupCount=1  
 Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54  
 ```
+
+Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity Mono). If you just want to test .NET 5 you can use the [net5 branch](../../tree/net5). If you want to use plain mono, you can just remove the environment variable from the batch/shell script.
+
+## Findings
 
 ### Hash Generation
 
