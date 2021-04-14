@@ -26,32 +26,10 @@ namespace MicroBenchmarks.Extensions
 
 			var baseJob = DefineBaseJob();
 
-			AddJob(baseJob
-				.WithRuntime(CoreRuntime.Core50)
-				.WithPlatform(Platform.X64));
-
-			AddJob(baseJob
-				.WithRuntime(CoreRuntime.Core31)
-				.WithPlatform(Platform.X64));
-
-			AddJob(baseJob
-				.WithRuntime(ClrRuntime.Net48)
-				.WithPlatform(Platform.X64));
-
-			// See win-benchmark.bat / linux-benchmark.sh
-			var monoUnityPath = Environment.GetEnvironmentVariable("MONO_UNITY");
-			if (monoUnityPath != null)
-			{
-				AddJob(baseJob
-					.WithRuntime(new MonoRuntime("Unity Mono x64", monoUnityPath))
-					.WithPlatform(Platform.X64));
-			}
-			else
-			{
-				AddJob(baseJob
-					.WithRuntime(MonoRuntime.Default)
-					.WithPlatform(Platform.X64));
-			}
+			AddJob(baseJob.WithRuntime(CoreRuntime.Core50));
+			AddJob(baseJob.WithRuntime(CoreRuntime.Core31));
+			AddJob(baseJob.WithRuntime(ClrRuntime.Net48));
+			AddMonoJob(baseJob);
 
 			AddColumn(FixedColumn.VersionColumn);
 			AddColumn(FixedColumn.OperatingSystemColumn);
@@ -59,6 +37,20 @@ namespace MicroBenchmarks.Extensions
 
 			AddExporter(MarkdownExporter.GitHub);
 			AddExporter(new CsvExporter(CsvSeparator.Comma, ConfigConstants.CsvStyle));
+		}
+
+		private void AddMonoJob(Job baseJob)
+		{
+			// See win-benchmark.bat / linux-benchmark.sh
+			var monoUnityPath = Environment.GetEnvironmentVariable("MONO_UNITY");
+			if (monoUnityPath == null)
+			{
+				AddJob(baseJob.WithRuntime(MonoRuntime.Default));
+				return;
+			}
+
+			var unityMonoRuntime = new MonoRuntime("Unity Mono x64", monoUnityPath);
+			AddJob(baseJob.WithRuntime(unityMonoRuntime));
 		}
 
 		protected virtual Job DefineBaseJob()
@@ -71,7 +63,8 @@ namespace MicroBenchmarks.Extensions
 				.WithMaxIterationCount(20)
 				.WithGcServer(true)
 				.WithGcConcurrent(true)
-				.WithGcForce(true);
+				.WithGcForce(true)
+				.WithPlatform(Platform.X64);
 		}
 	}
 }

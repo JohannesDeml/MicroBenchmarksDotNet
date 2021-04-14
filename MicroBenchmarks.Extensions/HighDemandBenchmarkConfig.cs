@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 
 namespace MicroBenchmarks.Extensions
@@ -26,7 +27,8 @@ namespace MicroBenchmarks.Extensions
 				.WithInvocationCount(1)
 				.WithGcServer(true)
 				.WithGcConcurrent(true)
-				.WithGcForce(true);
+				.WithGcForce(true)
+				.WithPlatform(Platform.X64);
 		}
 	}
 }
