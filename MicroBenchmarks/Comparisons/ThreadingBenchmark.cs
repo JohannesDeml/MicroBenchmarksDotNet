@@ -59,7 +59,7 @@ namespace MicroBenchmarks
 		{
 			clients = new List<Client>();
 			var clientCount = Math.Max(ThreadsPerCore * Environment.ProcessorCount, 1);
-			var clientMoveTarget = MoveTargetPerCore /  Math.Max(ThreadsPerCore, 1);
+			var clientMoveTarget = MoveTargetPerCore / Math.Max(ThreadsPerCore, 1);
 
 			for (int i = 0; i < clientCount; i++)
 			{
@@ -67,6 +67,7 @@ namespace MicroBenchmarks
 				client.AddMessages(BucketSize);
 				clients.Add(client);
 			}
+
 			Console.WriteLine($"Clients: {clientCount}, clientMoveTarget: {clientMoveTarget}, totalMove: {clientMoveTarget * clientCount}");
 		}
 
@@ -115,6 +116,7 @@ namespace MicroBenchmarks
 
 		private long itemsMoved = 0;
 		private bool finished;
+
 		public Client(int id, long clientMoveTarget)
 		{
 			this.id = id;
