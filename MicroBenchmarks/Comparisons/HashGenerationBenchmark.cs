@@ -67,7 +67,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
@@ -85,7 +85,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
@@ -102,7 +102,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))

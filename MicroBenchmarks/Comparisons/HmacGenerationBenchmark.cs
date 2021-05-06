@@ -22,7 +22,6 @@ namespace MicroBenchmarks
 		[Params(10, 100, 1000)]
 		public int ArraySize { get; set; }
 
-		private byte[] secretKey;
 		private byte[] data;
 		private byte[] hashResult;
 
@@ -33,7 +32,7 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			secretKey = new byte[64];
+			var secretKey = new byte[64];
 			using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
 			{
 				rng.GetBytes(secretKey);
@@ -74,7 +73,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (md5Provider.TryComputeHash(data, hashResult, out int bytesWritten))
@@ -91,7 +90,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (sha1Provider.TryComputeHash(data, hashResult, out int bytesWritten))
@@ -108,7 +107,7 @@ namespace MicroBenchmarks
 		{
 			#if NET48
 			// Not supported
-			return null;
+			return new byte[0];
 			#else
 
 			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))

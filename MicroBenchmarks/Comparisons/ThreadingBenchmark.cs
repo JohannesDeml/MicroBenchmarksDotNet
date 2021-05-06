@@ -28,10 +28,10 @@ namespace MicroBenchmarks
 		[Params(0, 10)]
 		public int ThreadsPerCore { get; set; }
 
-		public int BucketSize = 1_000;
-		public long MoveTargetPerCore = 100_000_000;
+		private const int BucketSize = 1_000;
+		private const long MoveTargetPerCore = 100_000_000;
 
-		private static List<Client> clients;
+		private List<Client> clients;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()

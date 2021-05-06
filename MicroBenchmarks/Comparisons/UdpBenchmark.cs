@@ -22,7 +22,7 @@ namespace MicroBenchmarks
 		[Params(32, 1_000, 10_000)]
 		public int MessageSize { get; set; }
 
-		private int port = 3333;
+		private const int Port = 3333;
 
 		UdpClient udpServer;
 		private IPEndPoint endPoint;
@@ -36,16 +36,23 @@ namespace MicroBenchmarks
 			PrepareClient();
 		}
 
+		[GlobalCleanup]
+		public void CleanupBenchmark()
+		{
+			udpClient.Dispose();
+			udpServer.Dispose();
+		}
+
 		private void PrepareServer()
 		{
-			udpServer = new UdpClient(port);
-			endPoint = new IPEndPoint(IPAddress.Any, port);
+			udpServer = new UdpClient(Port);
+			endPoint = new IPEndPoint(IPAddress.Any, Port);
 		}
 
 		private void PrepareClient()
 		{
 			udpClient = new UdpClient();
-			IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+			IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), Port);
 			udpClient.Connect(ep);
 
 			message = new byte[MessageSize];
