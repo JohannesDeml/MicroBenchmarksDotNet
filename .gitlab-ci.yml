@@ -23,7 +23,7 @@ benchmark_job:
     - dotnet build $BENCHMARK_PROJECT_PATH --framework net5.0 --configuration Release --no-restore --output $BENCHMARK_FOLDER
 
     # Run the benchmarks
-    - $BENCHMARK_FOLDER/$BENCHMARK_NAME
+    - $BENCHMARK_FOLDER/$BENCHMARK_NAME --filter *
 
     # Store running processes
     - ps -aux > ./BenchmarkDotNet.Artifacts/running-processes.txt
