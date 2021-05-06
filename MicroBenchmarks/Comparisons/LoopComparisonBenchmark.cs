@@ -8,7 +8,6 @@
 // </author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
@@ -18,13 +17,10 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class LoopComparisonBenchmark
 	{
-		private const int Seed = 1337;
-
 		[Params(100, 1000, 10000)]
 		public int ArraySize { get; set; }
 
 		private byte[] data;
-		private int sum;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
@@ -35,7 +31,7 @@ namespace MicroBenchmarks
 		[Benchmark(Baseline = true)]
 		public int ForLoopPostIncrement()
 		{
-			sum = 0;
+			var sum = 0;
 			for (int i = 0; i < data.Length; i++)
 			{
 				sum += data[i];
@@ -47,7 +43,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public int ForLoopPostIncrementUnroll4()
 		{
-			sum = 0;
+			var sum = 0;
 			for (int i = 0; i < data.Length; i += 4)
 			{
 				sum += data[i];
@@ -62,7 +58,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public int ForLoopPreIncrement()
 		{
-			sum = 0;
+			var sum = 0;
 			for (int i = 0; i < data.Length; ++i)
 			{
 				sum += data[i];
@@ -74,7 +70,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public int ForeachLoop()
 		{
-			sum = 0;
+			var sum = 0;
 			foreach (var i in data)
 			{
 				sum += i;
