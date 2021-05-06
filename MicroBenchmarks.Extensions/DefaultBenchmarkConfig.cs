@@ -28,12 +28,7 @@ namespace MicroBenchmarks.Extensions
 
 			AddJob(baseJob.WithRuntime(CoreRuntime.Core50));
 
-			AddColumn(FixedColumn.VersionColumn);
-			AddColumn(FixedColumn.OperatingSystemColumn);
-			AddColumn(FixedColumn.DateTimeColumn);
-
-			AddExporter(MarkdownExporter.GitHub);
-			AddExporter(new CsvExporter(CsvSeparator.Comma, ConfigConstants.CsvStyle));
+			ConfigHelper.AddDefaultColumns(this);
 		}
 
 		private void AddMonoJob(Job baseJob)
