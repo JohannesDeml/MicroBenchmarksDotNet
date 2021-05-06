@@ -22,7 +22,7 @@ namespace MicroBenchmarks
 		[Params(32, 1_000, 10_000)]
 		public int MessageSize { get; set; }
 
-		private const int Port = 3333;
+		private const int Port = 3330;
 
 		UdpClient udpServer;
 		private IPEndPoint endPoint;
