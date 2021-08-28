@@ -55,7 +55,6 @@ namespace MicroBenchmarks
 		}
 
 
-
 		[Benchmark]
 		[BenchmarkCategory("TimeDifference")]
 		public long StopwatchElapsed()
@@ -68,7 +67,7 @@ namespace MicroBenchmarks
 		[BenchmarkCategory("TimeDifference")]
 		public double DateTimeDifference()
 		{
-			var elapsed = (dateTime-DateTime.UtcNow).TotalMilliseconds;
+			var elapsed = (dateTime - DateTime.UtcNow).TotalMilliseconds;
 			return elapsed;
 		}
 
@@ -76,7 +75,7 @@ namespace MicroBenchmarks
 		[BenchmarkCategory("TimeDifference")]
 		public double DateTimeOffsetDifference()
 		{
-			var elapsed = (dateTimeOffset-DateTime.UtcNow).TotalMilliseconds;
+			var elapsed = (dateTimeOffset - DateTime.UtcNow).TotalMilliseconds;
 			return elapsed;
 		}
 	}

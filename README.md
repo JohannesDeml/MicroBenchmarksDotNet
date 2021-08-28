@@ -1,12 +1,9 @@
 # Micro Benchmarks for C#
 
-*Benchmarks for a better understanding of performance costs*
+*Benchmarks for a better understanding of performance costs*  
 [![Releases](https://img.shields.io/github/release/JohannesDeml/MicroBenchmarksDotNet/all.svg)](../../releases)
 
-
-
-## Findings
-
+## Setup
 To reproduce the results, run `win-benchmark.bat` or `linux-benchmark.sh` as admin/root.  
 The benchmarks are run with 2020 gaming PC after bootup of the system - [Hardware Details](https://pcpartpicker.com/b/8MMcCJ)  
 
@@ -25,12 +22,16 @@ MinIterationCount=15  UnrollFactor=16  WarmupCount=1
 Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54  
 ```
 
+Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity Mono). If you just want to test .NET 5 you can use the [net5 branch](../../tree/net5). If you want to use plain mono, you can just remove the environment variable from the batch/shell script.
+
+## Findings
+
 ### Hash Generation
 
-![Hash Generation Comparison Chart](./Docs/hashgeneration-windows10-1.0.0.png)
+![Hash Generation Comparison Chart](./Docs/hashgeneration100bytes-1.0.0.png)
 
-* If you can, always use TryHash instead of Hash
-* Surprisingly, Sha256 performs better, than Sha1 which performs better than Md5 for .NET Core and .NET framework on modern hardware. Always test on your target hardware, which is faster and don't assume that Md5 will be faster than Sha256 not matter what.
+* If you can, always use `TryXHash()` instead of `XHash()`
+* Surprisingly, Sha256 performs better, than Sha1 which performs better than Md5 for .NET Core and .NET framework on modern hardware for .NET, for Mono it is the other way around. Always test on your target hardware, which is faster and don't assume that Md5 will be faster than Sha256 not matter what.
 
 
 ### UDP Sockets
@@ -40,9 +41,10 @@ Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54
 * A further discussion can be found on [superuser](https://superuser.com/questions/1640588/windows-10-udp-socket-benchmark-a-lot-faster-in-safe-mode). If you have any input, I would love to know!
 
 ### Pause Accuracy
-![Pause Accuracy Chart](./Docs/pauseaccuracy2ms-windows10-1.0.0.png)
+![Pause Accuracy Chart](./Docs/pauseaccuracy2ms-1.0.0.png)
 
 * `Thread.SpinWait(10)` and `Thread.Sleep(0)` allow for maximum precision, also on windows, but they block processing time that might be needed by other processes.
 * `Thread.Sleep(TimeoutDuration)`  and all others have the problem that the granularity follows that of the system timer. For windows this is ~15ms.  
 * There is trick to change the granularity by using winmm.dll's `timeBeginPeriod(uint period)` and `timeEndPeriod(uint period)`. This can be seen with ThreadSleepEnhanced - It works for .NET 5 and .NET Core 3.1, but not the others.
+* Linux is a lot better in its granularity, but `TaskDelay` and `TimerAwait` have precision problems as well on .NET Core.
 

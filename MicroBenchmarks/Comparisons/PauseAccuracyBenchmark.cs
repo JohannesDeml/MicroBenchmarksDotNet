@@ -10,12 +10,14 @@
 
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using BenchmarkDotNet.Attributes;
 using MicroBenchmarks.Extensions;
+#if WINDOWS
+using System.Runtime.InteropServices;
+#endif
 
 namespace MicroBenchmarks
 {
@@ -48,10 +50,10 @@ namespace MicroBenchmarks
 		/// See https://web.archive.org/web/20051125042113/http://www.dotnet247.com/247reference/msgs/57/289291.aspx
 		/// See https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
 		[DllImport("winmm.dll")]
-		internal static extern uint timeBeginPeriod(uint period);
+		private static extern uint timeBeginPeriod(uint period);
 
 		[DllImport("winmm.dll")]
-		internal static extern uint timeEndPeriod(uint period);
+		private static extern uint timeEndPeriod(uint period);
 		#endif
 
 		private bool loopOtherThread;
@@ -165,14 +167,14 @@ namespace MicroBenchmarks
 		}
 
 		private System.Timers.Timer aTimer;
-		private static bool timerFinished = false;
+		private bool timerFinished = false;
 
 		[GlobalSetup(Target = nameof(TimerWait))]
 		public void PrepareTimerWait()
 		{
 			PrepareBenchmark();
 			aTimer = new System.Timers.Timer(TimeoutDuration);
-			aTimer.Elapsed += (Object source, ElapsedEventArgs e) => { PauseAccuracyBenchmark.timerFinished = true; };
+			aTimer.Elapsed += (Object source, ElapsedEventArgs e) => { timerFinished = true; };
 			aTimer.AutoReset = false;
 			aTimer.Enabled = true;
 			aTimer.Stop();
