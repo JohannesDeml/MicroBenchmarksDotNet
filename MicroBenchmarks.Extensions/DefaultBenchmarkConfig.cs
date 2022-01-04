@@ -26,11 +26,11 @@ namespace MicroBenchmarks.Extensions
 
 			var baseJob = DefineBaseJob();
 
+			AddJob(baseJob.WithRuntime(CoreRuntime.Core60));
 			AddJob(baseJob.WithRuntime(CoreRuntime.Core50));
-			AddJob(baseJob.WithRuntime(CoreRuntime.Core31));
 			AddJob(baseJob.WithRuntime(ClrRuntime.Net48));
 			AddMonoJob(baseJob);
-			
+
 			ConfigHelper.AddDefaultColumns(this);
 		}
 

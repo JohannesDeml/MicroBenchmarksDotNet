@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net48;net5.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net48;net5.0;net6.0;netcoreapp3.1</TargetFrameworks>
         <RootNamespace>MicroBenchmarks.Extensions</RootNamespace>
     </PropertyGroup>
 
@@ -10,7 +10,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
     </ItemGroup>
 
 </Project>
