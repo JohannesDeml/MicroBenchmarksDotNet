@@ -66,8 +66,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public int LogPreparedStringFormat()
 		{
-			string preparedMessage = string.Format("firstParam: {0}, secondParam: {1}, thirdParam:{2}",
-				firstParam, secondParam, thirdParam);
+			string preparedMessage = $"firstParam: {firstParam}, secondParam: {secondParam}, thirdParam:{thirdParam}";
 			Log(preparedMessage);
 			return 1;
 		}
