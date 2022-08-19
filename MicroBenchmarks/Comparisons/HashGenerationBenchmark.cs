@@ -25,18 +25,18 @@ namespace MicroBenchmarks
 		private byte[] data;
 		private byte[] hashResult;
 
-		private MD5CryptoServiceProvider md5Provider;
-		private SHA1CryptoServiceProvider sha1Provider;
-		private SHA256CryptoServiceProvider sha256Provider;
+		private MD5 md5Provider;
+		private SHA1 sha1Provider;
+		private SHA256 sha256Provider;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
 			data = ValuesGenerator.Array<byte>(ArraySize);
 
-			md5Provider = new MD5CryptoServiceProvider();
-			sha1Provider = new SHA1CryptoServiceProvider();
-			sha256Provider = new SHA256CryptoServiceProvider();
+			md5Provider = MD5.Create();
+			sha1Provider = SHA1.Create();
+			sha256Provider = SHA256.Create();
 			hashResult = new byte[64];
 		}
 

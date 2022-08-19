@@ -33,7 +33,8 @@ namespace MicroBenchmarks
 		public void PrepareBenchmark()
 		{
 			var secretKey = new byte[64];
-			using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+
+			using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
 			{
 				rng.GetBytes(secretKey);
 			}
