@@ -48,3 +48,53 @@ Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity 
 * There is trick to change the granularity by using winmm.dll's `timeBeginPeriod(uint period)` and `timeEndPeriod(uint period)`. This can be seen with ThreadSleepEnhanced - It works for .NET 5 and .NET Core 3.1, but not the others.
 * Linux is a lot better in its granularity, but `TaskDelay` and `TimerAwait` have precision problems as well on .NET Core.
 
+
+
+### Conditional methods
+
+* stripping method call logic happens also for the parameters inside the method call, so you don't have to worry about string concatenation if you do it in the call itself.
+
+  * ```csharp
+    // No overhead when stripped
+    // the string interpolation is stripped away, if Log is stripped away
+    Log($"firstParam: {firstParam}, secondParam: {secondParam}, thirdParam:{thirdParam}");
+    ```
+
+  * ```csharp
+    // Adds overheas when stripped
+    // String interpolation happens independant of stripping of Log
+    string preparedMessage = $"firstParam: {firstParam}, secondParam: {secondParam}, thirdParam:{thirdParam}";
+    Log(preparedMessage);
+    ```
+
+
+
+### Lambda calls
+
+* Even though lambdas are a nice way to add code directly within the method, it does result in less performance than having a direct method call and adds additional memory pressure. Using functions which don't require access to local variables does not result in additional memory pressure and has less general overhead.
+  * ```csharp
+    // Slow
+    // accesses local variables and therefore allocates additional memory
+    Action lambda = () => { result = FirstValue + SecondValue; };
+    lambda.Invoke();
+    return result;
+    ```
+  * ```csharp
+    // Faster
+    // no need to access local variables
+    var lambda = new Func<int, int, int>((a, b) => a + b);
+    return lambda.Invoke(FirstValue, SecondValue);
+    ```
+  * ```csharp
+    // Fastest
+    // direct calls are still the way to go for critical code paths
+    int AddWithReturn(int a, int b)
+    {
+    	return a + b;
+    }
+    return AddWithReturn(FirstValue, SecondValue);
+    ```
+
+### Caller Information
+
+* Using attributes such as `[CallerMemberName]`, `[CallerFilePath]` and `[CallerLineNumber]` are a great addition to retrieve information about the calling methods without relying on expensive stacktrace methods. The overhead of the attributes is not measurable with Benchmarkdotnet (and therefore virtually nothing).
