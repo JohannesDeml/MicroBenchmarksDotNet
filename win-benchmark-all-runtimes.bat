@@ -2,10 +2,12 @@
 :: Options: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build
 :: Build targets: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 
+:: Target all runtimes
+SET TARGET_RUNTIMES=Core60,Core50,Net48,Mono
 :: Define your mono path you want to test, or remove this line to use the default mono installation
 SET MONO_UNITY=C:\Program Files\Unity\2020.3.38f1\Editor\Data\MonoBleedingEdge\bin\mono.exe
 
-dotnet build --configuration Release --framework net48 --output .\bin\MicroBenchmarks-Windows\
+dotnet build --configuration Release --framework net6.0 --output .\bin\MicroBenchmarks-Windows\
 .\bin\MicroBenchmarks-Windows\MicroBenchmarks
 
 echo off

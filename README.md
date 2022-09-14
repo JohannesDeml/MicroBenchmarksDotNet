@@ -1,7 +1,7 @@
 # Micro Benchmarks for C#
 
-*Benchmarks for a better understanding of performance costs*  
-[![Releases](https://img.shields.io/github/release/JohannesDeml/MicroBenchmarksDotNet/all.svg)](../../releases)
+*Various benchmarks for showing hidden performance costs*  
+[![Releases](https://img.shields.io/github/release/JohannesDeml/MicroBenchmarksDotNet/all.svg)](../../releases)[![.NET 6.0](https://img.shields.io/badge/.NET-6.0-blueviolet.svg)](https://dotnet.microsoft.com/download/dotnet/6.0)
 
 ## Setup
 To reproduce the results, run `win-benchmark.bat` or `linux-benchmark.sh` as admin/root.  
@@ -22,35 +22,21 @@ MinIterationCount=15  UnrollFactor=16  WarmupCount=1
 Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54  
 ```
 
-Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity Mono). If you just want to test .NET 5 you can use the [net5 branch](../../tree/net5). If you want to use plain mono, you can just remove the environment variable from the batch/shell script.
+Be default only **.NET 6** is tested. However, you can target different runtimes with the environment variable `TARGET_RUNTIMES` (example: `export TARGET_RUNTIMES=Core60,Core50,Net48,Mono`). See also [linux-benchmark-all-runtimes.sh](./linux-benchmark-all-runtimes.sh) as an example for targeting all platforms.
+
+| Runtime      | Variable |
+| ------------ | -------- |
+| .NET 7       | Core70   |
+| NativeAOT 7  | Aot70    |
+| .NET 6       | Core60   |
+| NativeAOT 6, | Aot60    |
+| .NET 5       | Core50   |
+| .NET 4.8     | Net48    |
+| (Unity) Mono | Mono     |
 
 ## Findings
 
-### Hash Generation
-
-![Hash Generation Comparison Chart](./Docs/hashgeneration100bytes-1.0.0.png)
-
-* If you can, always use `TryXHash()` instead of `XHash()`
-* Surprisingly, Sha256 performs better, than Sha1 which performs better than Md5 for .NET Core and .NET framework on modern hardware for .NET, for Mono it is the other way around. Always test on your target hardware, which is faster and don't assume that Md5 will be faster than Sha256 not matter what.
-
-
-### UDP Sockets
-![UDP Comparison Chart](./Docs/udpsocket-sendreceive-1.0.0.png)
-
-* For some (for me yet unknown) reason, UDP performs a lot better on Windows safe mode, than it does with normal windows mode. This is the only benchmark, that shows that kind of behavior. For all other benchmarks the results are statistically the same for normal and safe mode.
-* A further discussion can be found on [superuser](https://superuser.com/questions/1640588/windows-10-udp-socket-benchmark-a-lot-faster-in-safe-mode). If you have any input, I would love to know!
-
-### Pause Accuracy
-![Pause Accuracy Chart](./Docs/pauseaccuracy2ms-1.0.0.png)
-
-* `Thread.SpinWait(10)` and `Thread.Sleep(0)` allow for maximum precision, also on windows, but they block processing time that might be needed by other processes.
-* `Thread.Sleep(TimeoutDuration)`  and all others have the problem that the granularity follows that of the system timer. For windows this is ~15ms.  
-* There is trick to change the granularity by using winmm.dll's `timeBeginPeriod(uint period)` and `timeEndPeriod(uint period)`. This can be seen with ThreadSleepEnhanced - It works for .NET 5 and .NET Core 3.1, but not the others.
-* Linux is a lot better in its granularity, but `TaskDelay` and `TimerAwait` have precision problems as well on .NET Core.
-
-
-
-### Conditional methods
+### Conditional methods ([Test](./MicroBenchmarks/Comparisons/ConditionalFormattedLoggingBenchmark.cs))
 
 * stripping method call logic happens also for the parameters inside the method call, so you don't have to worry about string concatenation if you do it in the call itself.
 
@@ -69,9 +55,10 @@ Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity 
 
 
 
-### Lambda calls
+### Lambda calls ([Test](./MicroBenchmarks/Comparisons/LambdaBenchmark.cs))
 
 * Even though lambdas are a nice way to add code directly within the method, it does result in less performance than having a direct method call and adds additional memory pressure. Using functions which don't require access to local variables does not result in additional memory pressure and has less general overhead.
+
   * ```csharp
     // Slow
     // accesses local variables and therefore allocates additional memory
@@ -79,12 +66,14 @@ Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity 
     lambda.Invoke();
     return result;
     ```
+
   * ```csharp
     // Faster
     // no need to access local variables
     var lambda = new Func<int, int, int>((a, b) => a + b);
     return lambda.Invoke(FirstValue, SecondValue);
     ```
+
   * ```csharp
     // Fastest
     // direct calls are still the way to go for critical code paths
@@ -95,6 +84,36 @@ Be default four platforms are tested (.NET 5, .NET Core 3.1, .NET 4.8 and Unity 
     return AddWithReturn(FirstValue, SecondValue);
     ```
 
-### Caller Information
+
+
+### Caller Information ([Test](./MicroBenchmarks/Comparisons/CallerInformationAttributesBenchmark.cs))
 
 * Using attributes such as `[CallerMemberName]`, `[CallerFilePath]` and `[CallerLineNumber]` are a great addition to retrieve information about the calling methods without relying on expensive stacktrace methods. The overhead of the attributes is not measurable with Benchmarkdotnet (and therefore virtually nothing).
+
+
+### Hash Generation ([Test](./MicroBenchmarks/Comparisons/HashGenerationBenchmark.cs))
+
+![Hash Generation Comparison Chart](./Docs/hashgeneration100bytes-1.0.0.png)
+
+* If you can, always use `TryXHash()` instead of `XHash()`
+* Surprisingly, Sha256 performs better, than Sha1 which performs better than Md5 for .NET Core and .NET framework on modern hardware for .NET, for Mono it is the other way around. Always test on your target hardware, which is faster and don't assume that Md5 will be faster than Sha256 not matter what.
+
+
+
+### UDP Sockets ([Test](./MicroBenchmarks/Comparisons/UdpBenchmark.cs))
+
+![UDP Comparison Chart](./Docs/udpsocket-sendreceive-1.0.0.png)
+
+* For some (for me yet unknown) reason, UDP performs a lot better on Windows safe mode, than it does with normal windows mode. This is the only benchmark, that shows that kind of behavior. For all other benchmarks the results are statistically the same for normal and safe mode.
+* A further discussion can be found on [superuser](https://superuser.com/questions/1640588/windows-10-udp-socket-benchmark-a-lot-faster-in-safe-mode). If you have any input, I would love to know!
+
+
+
+### Pause Accuracy ([Test](./MicroBenchmarks/Comparisons/PauseAccuracyBenchmark.cs))
+
+![Pause Accuracy Chart](./Docs/pauseaccuracy2ms-1.0.0.png)
+
+* `Thread.SpinWait(10)` and `Thread.Sleep(0)` allow for maximum precision, also on windows, but they block processing time that might be needed by other processes.
+* `Thread.Sleep(TimeoutDuration)`  and all others have the problem that the granularity follows that of the system timer. For windows this is ~15ms.  
+* There is trick to change the granularity by using winmm.dll's `timeBeginPeriod(uint period)` and `timeEndPeriod(uint period)`. This can be seen with ThreadSleepEnhanced - It works for .NET 5 and .NET Core 3.1, but not the others.
+* Linux is a lot better in its granularity, but `TaskDelay` and `TimerAwait` have precision problems as well on .NET Core.

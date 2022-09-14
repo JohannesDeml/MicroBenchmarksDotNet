@@ -11,8 +11,6 @@
 using System;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
-using BenchmarkDotNet.Exporters;
-using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Jobs;
 using Perfolizer.Horology;
 
@@ -26,12 +24,52 @@ namespace MicroBenchmarks.Extensions
 
 			var baseJob = DefineBaseJob();
 
-			AddJob(baseJob.WithRuntime(CoreRuntime.Core60));
-			AddJob(baseJob.WithRuntime(CoreRuntime.Core50));
-			AddJob(baseJob.WithRuntime(ClrRuntime.Net48));
-			AddMonoJob(baseJob);
+			var runtimes = Environment.GetEnvironmentVariable("TARGET_RUNTIMES");
+			if (runtimes == null)
+			{
+				AddJob(baseJob.WithRuntime(CoreRuntime.Core60));
+			}
+			else
+			{
+				AddRuntimesFromEnvironment(runtimes, baseJob);
+			}
 
 			ConfigHelper.AddDefaultColumns(this);
+		}
+
+		private void AddRuntimesFromEnvironment(string runtimes, Job baseJob)
+		{
+			string[] runtimeArray = runtimes.Split(',');
+			for (int i = 0; i < runtimeArray.Length; i++)
+			{
+				var runtime = runtimeArray[i].Trim();
+				switch (runtime)
+				{
+					case "Core70":
+						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net70));
+						break;
+					case "Aot70":
+						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net70));
+						break;
+					case "Core60":
+						AddJob(baseJob.WithRuntime(CoreRuntime.Core60));
+						break;
+					case "Aot60":
+						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net60));
+						break;
+					case "Core50":
+						AddJob(baseJob.WithRuntime(CoreRuntime.Core50));
+						break;
+					case "Net48":
+						AddJob(baseJob.WithRuntime(ClrRuntime.Net48));
+						break;
+					case "Mono":
+						AddMonoJob(baseJob);
+						break;
+					default:
+						throw new Exception($"Runtime {runtime} not supported");
+				}
+			}
 		}
 
 		private void AddMonoJob(Job baseJob)

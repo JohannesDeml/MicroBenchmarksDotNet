@@ -3,8 +3,13 @@
 # Options: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build
 # Build targets: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 
+# Target all runtimes
+export TARGET_RUNTIMES=Core60,Core50,Net48,Mono
+# Define your mono path you want to test, or remove this line to use the default mono installation
+export MONO_UNITY="/home/johannes/Unity/Hub/Editor/2020.3.38f1/Editor/Data/MonoBleedingEdge/bin-linux64/mono"
+
 # Needs to be compiled as an exe, since benchmarkdotnet .netcore builds can't run mono targets 
-dotnet build --configuration Release --framework net6.0 --output ./bin/MicroBenchmarks-Linux/
+dotnet build --configuration Release --framework net48 --output ./bin/MicroBenchmarks-Linux/
 mono ./bin/MicroBenchmarks-Linux/MicroBenchmarks.exe
 
 echo "--- Benchmark finished ---"
