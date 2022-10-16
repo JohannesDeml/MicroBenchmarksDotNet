@@ -26,7 +26,7 @@ namespace MicroBenchmarks.Extensions
 		/// * units stay the same
 		/// * No units in cell data (Always numbers)
 		/// </summary>
-		public static readonly SummaryStyle CsvStyle = new SummaryStyle(CultureInfo.InvariantCulture, false, SizeUnit.KB, TimeUnit.Nanosecond,
+		private static readonly SummaryStyle CsvStyle = new SummaryStyle(CultureInfo.InvariantCulture, false, SizeUnit.KB, TimeUnit.Nanosecond,
 			false, true, 100);
 
 		public static void AddDefaultColumns(ManualConfig config)
@@ -35,9 +35,12 @@ namespace MicroBenchmarks.Extensions
 			config.AddColumn(FixedColumn.OperatingSystemColumn);
 			config.AddColumn(FixedColumn.DateTimeColumn);
 			config.AddColumn(new EnvironmentVariableColumn("SystemTag", "SYSTEM_TAG"));
+		}
 
+		public static void AddDefaultExporters(ManualConfig config)
+		{
 			config.AddExporter(MarkdownExporter.GitHub);
-			config.AddExporter(new CsvExporter(CsvSeparator.Comma, ConfigHelper.CsvStyle));
+			config.AddExporter(new CsvExporter(CsvSeparator.Comma, CsvStyle));
 		}
 	}
 }

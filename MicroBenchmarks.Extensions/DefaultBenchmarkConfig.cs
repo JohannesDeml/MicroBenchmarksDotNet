@@ -9,9 +9,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 using Perfolizer.Horology;
 
 namespace MicroBenchmarks.Extensions
@@ -20,7 +22,8 @@ namespace MicroBenchmarks.Extensions
 	{
 		public DefaultBenchmarkConfig()
 		{
-			Add(DefaultConfig.Instance);
+			AddColumnProvider(DefaultColumnProviders.Instance);
+			AddLogger(ConsoleLogger.Default);
 
 			var baseJob = DefineBaseJob();
 
@@ -35,6 +38,8 @@ namespace MicroBenchmarks.Extensions
 			}
 
 			ConfigHelper.AddDefaultColumns(this);
+			ConfigHelper.AddDefaultExporters(this);
+			WithOptions(ConfigOptions.StopOnFirstError);
 		}
 
 		private void AddRuntimesFromEnvironment(string runtimes, Job baseJob)
