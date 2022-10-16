@@ -9,6 +9,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
@@ -21,41 +23,73 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class SortingBenchmark
 	{
+		public struct IntWrapper : IComparable<IntWrapper>
+		{
+			public int Value;
+
+			public IntWrapper(int value)
+			{
+				Value = value;
+			}
+
+			public int CompareTo(IntWrapper other)
+			{
+				return Value.CompareTo(other.Value);
+			}
+		}
+
+		private class IntWrapperComparer : IComparer<IntWrapper>
+		{
+			public int Compare(IntWrapper x, IntWrapper y)
+			{
+				return x.Value.CompareTo(y.Value);
+			}
+		}
+
 		[Params(10, 10000)]
 		public int ArraySize { get; set; }
 
-		private int[] data;
+		private IntWrapper[] data;
+		private IComparer<IntWrapper> intWrapperComparer;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			data = ValuesGenerator.Array<int>(ArraySize);
+			data = ValuesGenerator.Array<int>(ArraySize).Select(x => new IntWrapper(x)).ToArray();
+			intWrapperComparer = new IntWrapperComparer();
 		}
 
 		[Benchmark]
-		public int[] SortArray()
+		public int SortArrayIComparable()
 		{
 			Array.Sort(data);
-			return data;
+			return data[0].Value;
 		}
 
 		[Benchmark]
-		public int[] SortArrayLambda()
+		public int SortArrayIComparer()
 		{
-			Array.Sort(data, (a, b) => a-b);
-			return data;
+			Array.Sort(data, intWrapperComparer);
+			return data[0].Value;
 		}
 
 		[Benchmark]
-		public int[] SortArrayMethod()
+		public int SortArrayLambda()
+		{
+			Array.Sort(data, (a, b) => a.Value.CompareTo(b.Value));
+			return data[0].Value;
+		}
+
+		[Benchmark]
+		public int SortArrayMethod()
 		{
 			Array.Sort(data, Comparison);
-			return data;
+			return data[0].Value;
 		}
 
-		private static int Comparison(int a, int b)
+		private static int Comparison(IntWrapper a, IntWrapper b)
 		{
-			return a - b;
+			return a.Value.CompareTo(b.Value);
 		}
 	}
 }

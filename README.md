@@ -91,6 +91,14 @@ Be default only **.NET 6** is tested. However, you can target different runtimes
 * Using attributes such as `[CallerMemberName]`, `[CallerFilePath]` and `[CallerLineNumber]` are a great addition to retrieve information about the calling methods without relying on expensive stacktrace methods. The overhead of the attributes is not measurable with Benchmarkdotnet (and therefore virtually nothing).
 
 
+
+### String Search ([Test](./MicroBenchmarks/Comparisons/StringSearchBenchmark.cs))
+
+* For short strings: `IndexOfChar` and `LastIndexOfChar` are significantly faster than both `IndexOfString` and `LastIndexOfString`.
+* For long strings: While `IndexOfChar` is only slightly faster than `IndexOfString`, the increase between `LastIndexOfChar` and `LastIndexOfString`  is significant for .NET 6. `LastIndexOfChar` is over 7 times faster than `LastIndexOfString`, but still slower than the other two methods.
+
+
+
 ### Hash Generation ([Test](./MicroBenchmarks/Comparisons/HashGenerationBenchmark.cs))
 
 ![Hash Generation Comparison Chart](./Docs/hashgeneration100bytes-1.0.0.png)
