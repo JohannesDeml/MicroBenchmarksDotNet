@@ -22,9 +22,6 @@ namespace MicroBenchmarks.Extensions
 	{
 		public DefaultBenchmarkConfig()
 		{
-			AddColumnProvider(DefaultColumnProviders.Instance);
-			AddLogger(ConsoleLogger.Default);
-
 			var baseJob = DefineBaseJob();
 
 			var runtimes = Environment.GetEnvironmentVariable("TARGET_RUNTIMES");
