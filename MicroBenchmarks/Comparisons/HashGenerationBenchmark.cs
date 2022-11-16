@@ -19,7 +19,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class HashGenerationBenchmark
 	{
-		[Params(10, 100, 1000)]
+		[Params(100, 10000)]
 		public int ArraySize { get; set; }
 
 		private byte[] data;
@@ -28,6 +28,7 @@ namespace MicroBenchmarks
 		private MD5 md5Provider;
 		private SHA1 sha1Provider;
 		private SHA256 sha256Provider;
+		private SHA512 sha512Provider;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
@@ -37,6 +38,7 @@ namespace MicroBenchmarks
 			md5Provider = MD5.Create();
 			sha1Provider = SHA1.Create();
 			sha256Provider = SHA256.Create();
+			sha512Provider = SHA512.Create();
 			hashResult = new byte[64];
 		}
 
@@ -59,6 +61,13 @@ namespace MicroBenchmarks
 		public byte[] Sha256Hash()
 		{
 			var result = sha256Provider.ComputeHash(data, 0, data.Length);
+			return result;
+		}
+
+		[Benchmark]
+		public byte[] Sha512Hash()
+		{
+			var result = sha512Provider.ComputeHash(data, 0, data.Length);
 			return result;
 		}
 
@@ -106,6 +115,23 @@ namespace MicroBenchmarks
 			#else
 
 			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+			{
+				return hashResult;
+			}
+
+			throw new InvalidOperationException("Hash was not computed");
+			#endif
+		}
+
+		[Benchmark]
+		public byte[] TrySha512Hash()
+		{
+			#if NET48
+			// Not supported
+			return new byte[0];
+			#else
+
+			if (sha512Provider.TryComputeHash(data, hashResult, out int bytesWritten))
 			{
 				return hashResult;
 			}

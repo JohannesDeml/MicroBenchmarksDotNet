@@ -19,7 +19,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class HmacGenerationBenchmark
 	{
-		[Params(10, 100, 1000)]
+		[Params(100, 10000)]
 		public int ArraySize { get; set; }
 
 		private byte[] data;
@@ -28,6 +28,7 @@ namespace MicroBenchmarks
 		private HMACMD5 md5Provider;
 		private HMACSHA1 sha1Provider;
 		private HMACSHA256 sha256Provider;
+		private HMACSHA512 sha512Provider;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
@@ -44,6 +45,7 @@ namespace MicroBenchmarks
 			md5Provider = new HMACMD5(secretKey);
 			sha1Provider = new HMACSHA1(secretKey);
 			sha256Provider = new HMACSHA256(secretKey);
+			sha512Provider = new HMACSHA512(secretKey);
 			hashResult = new byte[64];
 		}
 
@@ -65,6 +67,13 @@ namespace MicroBenchmarks
 		public byte[] Sha256Hmac()
 		{
 			var result = sha256Provider.ComputeHash(data, 0, data.Length);
+			return result;
+		}
+
+		[Benchmark]
+		public byte[] Sha512Hmac()
+		{
+			var result = sha512Provider.ComputeHash(data, 0, data.Length);
 			return result;
 		}
 
@@ -112,6 +121,23 @@ namespace MicroBenchmarks
 			#else
 
 			if (sha256Provider.TryComputeHash(data, hashResult, out int bytesWritten))
+			{
+				return hashResult;
+			}
+
+			throw new InvalidOperationException("Error when computing HMAC");
+			#endif
+		}
+
+				[Benchmark]
+		public byte[] TrySha512Hmac()
+		{
+			#if NET48
+			// Not supported
+			return new byte[0];
+			#else
+
+			if (sha512Provider.TryComputeHash(data, hashResult, out int bytesWritten))
 			{
 				return hashResult;
 			}
