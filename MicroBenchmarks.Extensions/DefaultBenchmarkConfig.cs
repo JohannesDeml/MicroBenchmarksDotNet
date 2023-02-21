@@ -9,11 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Loggers;
 using Perfolizer.Horology;
 
 namespace MicroBenchmarks.Extensions
@@ -99,7 +97,7 @@ namespace MicroBenchmarks.Extensions
 				.WithGcServer(true)
 				.WithGcConcurrent(true)
 				.WithGcForce(true)
-				.WithPlatform(Platform.X64);
+				.WithPlatform(Platform.AnyCpu);
 		}
 	}
 }

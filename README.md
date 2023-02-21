@@ -22,7 +22,7 @@ MinIterationCount=15  UnrollFactor=16  WarmupCount=1
 Version=1.0.0  OS=Microsoft Windows 10.0.19042   DateTime=04/13/2021 12:37:54  
 ```
 
-Be default only **.NET 6** is tested. However, you can target different runtimes with the environment variable `TARGET_RUNTIMES` (example: `export TARGET_RUNTIMES=Core60,Core50,Net48,Mono`). See also [linux-benchmark-all-runtimes.sh](./linux-benchmark-all-runtimes.sh) as an example for targeting all platforms.
+By default only **.NET 6** is tested. However, you can target different runtimes with the environment variable `TARGET_RUNTIMES` (example: `export TARGET_RUNTIMES=Core60,Core50,Net48,Mono`). See also [linux-benchmark-all-runtimes.sh](./linux-benchmark-all-runtimes.sh) as an example for targeting all platforms.
 
 | Runtime      | Variable |
 | ------------ | -------- |
