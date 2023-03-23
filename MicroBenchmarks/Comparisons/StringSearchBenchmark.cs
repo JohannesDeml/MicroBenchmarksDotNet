@@ -18,8 +18,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class StringSearchBenchmark
 	{
-		[Params(10, 10000)]
-		public int LengthToTarget { get; set; }
+		[Params(10, 10000)] public int LengthToTarget { get; set; }
 
 		private const char TargetChar = '|';
 		private const string TargetString = "|";
@@ -43,6 +42,18 @@ namespace MicroBenchmarks
 			}
 
 			stringData = sb.ToString();
+		}
+
+		[Benchmark]
+		public bool StartsWithString()
+		{
+			return stringData.StartsWith(TargetString, StringComparison.Ordinal);
+		}
+
+		[Benchmark]
+		public bool EndsWithString()
+		{
+			return stringData.EndsWith(TargetString, StringComparison.Ordinal);
 		}
 
 		[Benchmark]
