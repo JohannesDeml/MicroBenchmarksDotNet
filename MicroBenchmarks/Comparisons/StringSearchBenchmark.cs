@@ -38,9 +38,17 @@ namespace MicroBenchmarks
 					sb.Append(TargetString);
 					continue;
 				}
+
 				sb.Append(random.Next(chars.Length));
 			}
+
 			stringData = sb.ToString();
+		}
+
+		[Benchmark]
+		public bool ContainsString()
+		{
+			return stringData.Contains(TargetString);
 		}
 
 		[Benchmark]
