@@ -13,6 +13,7 @@ namespace MicroBenchmarks
 		[Params(10, 10_000)] public int CollectionLength { get; set; }
 
 		private int[] array;
+		private IEnumerable<int> enumerable;
 		private List<int> list;
 		private ReadOnlyCollection<int> readOnlyCollection;
 		private HashSet<int> hashSet;
@@ -23,6 +24,7 @@ namespace MicroBenchmarks
 		public void PrepareBenchmark()
 		{
 			array = ValuesGenerator.ArrayOfUniqueValues<int>(CollectionLength);
+			enumerable = array;
 			list = new List<int>(array);
 			readOnlyCollection = new ReadOnlyCollection<int>(array);
 			hashSet = new HashSet<int>(array);
@@ -32,7 +34,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool ArrayIterateContains()
+		public bool ArrayForLoopContains()
 		{
 			for (int i = 0; i < array.Length; i++)
 			{
@@ -52,11 +54,11 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool ListIterateContains()
+		public bool EnumerableForEachLoopContains()
 		{
-			for (int i = 0; i < list.Count; i++)
+			foreach (int value in enumerable)
 			{
-				if (list[i] == target)
+				if (value == target)
 				{
 					return true;
 				}
