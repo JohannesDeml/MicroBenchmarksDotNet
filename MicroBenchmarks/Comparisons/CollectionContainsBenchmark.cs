@@ -68,6 +68,20 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
+		public bool ListForEachLoopContains()
+		{
+			foreach (int value in list)
+			{
+				if (value == target)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		[Benchmark]
 		public bool ListFindIndex()
 		{
 			return list.FindIndex(x => x == target) != -1;
