@@ -12,6 +12,8 @@ using System;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
+using Benchmarks;
 using Perfolizer.Horology;
 
 namespace MicroBenchmarks.Extensions
@@ -34,6 +36,7 @@ namespace MicroBenchmarks.Extensions
 
 			ConfigHelper.AddDefaultColumns(this);
 			ConfigHelper.AddDefaultExporters(this);
+			AddDiagnoser(new CpuDiagnoser());
 			WithOptions(ConfigOptions.StopOnFirstError);
 		}
 
