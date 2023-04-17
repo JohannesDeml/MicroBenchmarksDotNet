@@ -109,7 +109,13 @@ namespace BenchmarkDotNet.Extensions
             throw new NotImplementedException($"{typeof(T).Name} is not implemented");
         }
 
-        private static string GenerateRandomString(Random random, int minLength, int maxLength)
+		public static string GenerateRandomString(int count)
+		{
+			var random = new Random(Seed);
+			return GenerateRandomString(random, 0, count);
+		}
+
+		private static string GenerateRandomString(Random random, int minLength, int maxLength)
         {
             var length = random.Next(minLength, maxLength);
 

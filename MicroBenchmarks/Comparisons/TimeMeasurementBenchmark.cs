@@ -18,6 +18,9 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class TimeMeasurementBenchmark
 	{
+		private const string CreationCategory = "Creation";
+		private const string DifferenceCategory = "TimeDifference";
+
 		private Stopwatch stopwatch;
 		private DateTime dateTime;
 		private DateTimeOffset dateTimeOffset;
@@ -31,7 +34,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		[BenchmarkCategory("Creation")]
+		[BenchmarkCategory(CreationCategory)]
 		public Stopwatch CreateStopwatch()
 		{
 			stopwatch = new Stopwatch();
@@ -39,7 +42,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		[BenchmarkCategory("Creation")]
+		[BenchmarkCategory(CreationCategory)]
 		public DateTime CreateDateTime()
 		{
 			dateTime = DateTime.UtcNow;
@@ -47,7 +50,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		[BenchmarkCategory("Creation")]
+		[BenchmarkCategory(CreationCategory)]
 		public DateTimeOffset CreateDateTimeOffset()
 		{
 			dateTimeOffset = DateTimeOffset.UtcNow;
@@ -56,7 +59,7 @@ namespace MicroBenchmarks
 
 
 		[Benchmark]
-		[BenchmarkCategory("TimeDifference")]
+		[BenchmarkCategory(DifferenceCategory)]
 		public long StopwatchElapsed()
 		{
 			var elapsed = stopwatch.ElapsedMilliseconds;
@@ -64,7 +67,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		[BenchmarkCategory("TimeDifference")]
+		[BenchmarkCategory(DifferenceCategory)]
 		public double DateTimeDifference()
 		{
 			var elapsed = (dateTime - DateTime.UtcNow).TotalMilliseconds;
@@ -72,7 +75,7 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		[BenchmarkCategory("TimeDifference")]
+		[BenchmarkCategory(DifferenceCategory)]
 		public double DateTimeOffsetDifference()
 		{
 			var elapsed = (dateTimeOffset - DateTime.UtcNow).TotalMilliseconds;

@@ -11,6 +11,7 @@
 using System;
 using System.Text;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
@@ -18,7 +19,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class StringSearchBenchmark
 	{
-		[Params(10, 10000)]
+		[Params(10, 10_000)]
 		public int LengthToTarget { get; set; }
 
 		private const char TargetChar = '|';
@@ -28,21 +29,9 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			Random random = new Random();
-			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < 2 * LengthToTarget + 1; i++)
-			{
-				if (i == LengthToTarget)
-				{
-					sb.Append(TargetString);
-					continue;
-				}
-
-				sb.Append(random.Next(chars.Length));
-			}
-
-			stringData = sb.ToString();
+			// Make sure distance to target is the same from start and end of the string
+			stringData = ValuesGenerator.GenerateRandomString(LengthToTarget * 2);
+			stringData.Insert(LengthToTarget, TargetString);
 		}
 
 		[Benchmark]

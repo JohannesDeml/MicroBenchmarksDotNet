@@ -21,7 +21,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class CopyBytesBenchmark
 	{
-		[Params(10, 100, 10000)]
+		[Params(10, 10_000)]
 		public int ArraySize { get; set; }
 
 		private byte[] sourceArray;

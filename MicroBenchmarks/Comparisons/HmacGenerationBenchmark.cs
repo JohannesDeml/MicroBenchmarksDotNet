@@ -19,7 +19,7 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class HmacGenerationBenchmark
 	{
-		[Params(100, 10000)]
+		[Params(100, 10_000)]
 		public int ArraySize { get; set; }
 
 		private byte[] data;

@@ -7,6 +7,9 @@ using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
+	/// <summary>
+	/// For general looping comparisons <see cref="LoopArrayComparisonBenchmark"/>
+	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class CollectionContainsBenchmark
 	{
@@ -37,21 +40,6 @@ namespace MicroBenchmarks
 		public bool ArrayForLoopContains()
 		{
 			for (int i = 0; i < array.Length; i++)
-			{
-				if (array[i] == target)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		[Benchmark]
-		public bool ArrayForLoopCachedLengthContains()
-		{
-			int length = array.Length;
-			for (int i = 0; i < length; i++)
 			{
 				if (array[i] == target)
 				{

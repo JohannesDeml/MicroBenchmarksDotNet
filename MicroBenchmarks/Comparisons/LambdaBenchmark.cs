@@ -21,30 +21,59 @@ namespace MicroBenchmarks
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class LambdaBenchmark
 	{
-		[Params(2)]
+		[Params(1)]
 		public int FirstValue { get; set; }
 
-		[Params(3)]
+		[Params(1)]
 		public int SecondValue { get; set; }
 		private int result;
 
 		private Func<int, int, int> preparedLambdaFunction;
+		private Action<int, int> preparedAction;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
 			preparedLambdaFunction = new Func<int, int, int>((a, b) => a + b);
+			preparedAction = AddWithoutReturn;
+		}
+
+		private int Add(int a, int b)
+		{
+			return a + b;
+		}
+
+		private static int StaticAdd(int a, int b)
+		{
+			return a + b;
+		}
+
+		private void AddWithoutReturn(int a, int b)
+		{
+			result = a + b;
 		}
 
 		[Benchmark]
 		public int MethodCall()
 		{
-			int AddWithReturn(int a, int b)
+			return Add(FirstValue, SecondValue);
+		}
+
+		[Benchmark]
+		public int StaticMethodCall()
+		{
+			return StaticAdd(FirstValue, SecondValue);
+		}
+
+		[Benchmark]
+		public int LocalFunctionCall()
+		{
+			int LocalAdd(int a, int b)
 			{
 				return a + b;
 			}
 
-			return AddWithReturn(FirstValue, SecondValue);
+			return LocalAdd(FirstValue, SecondValue);
 		}
 
 
@@ -70,13 +99,15 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public int IndirectMethodCall()
+		public int PreparedActionInvocation()
 		{
-			void AddWithoutReturn(int a, int b)
-			{
-				result = a + b;
-			}
+			preparedAction.Invoke(FirstValue, SecondValue);
+			return result;
+		}
 
+		[Benchmark]
+		public int ActionInvocation()
+		{
 			Action<int, int> action = AddWithoutReturn;
 			action.Invoke(FirstValue, SecondValue);
 			return result;
