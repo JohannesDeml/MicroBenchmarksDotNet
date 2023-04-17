@@ -48,15 +48,24 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool ArrayLinqContains()
+		public bool ArrayForLoopCachedLengthContains()
 		{
-			return array.Contains(target);
+			int length = array.Length;
+			for (int i = 0; i < length; i++)
+			{
+				if (array[i] == target)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		[Benchmark]
-		public bool EnumerableForEachLoopContains()
+		public bool ArrayForEachLoopContains()
 		{
-			foreach (int value in enumerable)
+			foreach (int value in array)
 			{
 				if (value == target)
 				{
@@ -68,9 +77,15 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool ListForEachLoopContains()
+		public bool ArrayLinqContains()
 		{
-			foreach (int value in list)
+			return array.Contains(target);
+		}
+
+		[Benchmark]
+		public bool EnumerableForEachLoopContains()
+		{
+			foreach (int value in enumerable)
 			{
 				if (value == target)
 				{
