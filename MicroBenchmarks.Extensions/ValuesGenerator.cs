@@ -33,12 +33,11 @@ namespace BenchmarkDotNet.Extensions
             var uniqueValues = new HashSet<T>();
 
             while (uniqueValues.Count != count)
-            {
-                T value = GenerateValue<T>(random);
-
-                if (!uniqueValues.Contains(value))
-                    uniqueValues.Add(value);
-            }
+			{
+				T value = GenerateValue<T>(random);
+				// Only adds value if it does not yet exist in the hashset
+				uniqueValues.Add(value);
+			}
 
             return uniqueValues.ToArray();
         }

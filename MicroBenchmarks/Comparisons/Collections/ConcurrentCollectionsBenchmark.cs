@@ -30,7 +30,7 @@ namespace MicroBenchmarks
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			var collection = ValuesGenerator.Array<byte>(CollectionSize);
+			var collection = ValuesGenerator.ArrayOfUniqueValues<byte>(CollectionSize);
 
 			concurrentBag = new ConcurrentBag<byte>(collection);
 			concurrentStack = new ConcurrentStack<byte>(collection);

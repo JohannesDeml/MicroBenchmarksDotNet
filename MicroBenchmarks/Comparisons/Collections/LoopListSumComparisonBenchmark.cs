@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoopComparisonBenchmark.cs">
-//   Copyright (c) 2021 Johannes Deml. All rights reserved.
+// <copyright file="LoopListSumComparisonBenchmark.cs">
+//   Copyright (c) 2023 Johannes Deml. All rights reserved.
 // </copyright>
 // <author>
 //   Johannes Deml
@@ -8,6 +8,7 @@
 // </author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Extensions;
@@ -15,26 +16,30 @@ using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
+	/// <summary>
+	/// Compares different loop logics for a list to sum up all values
+	/// Interesting to compare the results to <see cref="LoopArraySumComparisonBenchmark"/>
+	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
-	public class LoopArrayComparisonBenchmark
+	public class LoopListSumComparisonBenchmark
 	{
 		// Needs to be a multiple of 4 to support ForLoopUnroll4
 		[Params(100, 100_000)]
 		public int ArraySize { get; set; }
 
-		private byte[] data;
+		private List<byte> data;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			data = ValuesGenerator.Array<byte>(ArraySize);
+			data = new List<byte>(ValuesGenerator.Array<byte>(ArraySize));
 		}
 
 		[Benchmark(Baseline = true)]
 		public int ForLoop()
 		{
 			var sum = 0;
-			for (int i = 0; i < data.Length; i++)
+			for (int i = 0; i < data.Count; i++)
 			{
 				sum += data[i];
 			}
@@ -46,7 +51,7 @@ namespace MicroBenchmarks
 		public int ForLoopPreIncrement()
 		{
 			var sum = 0;
-			for (int i = 0; i < data.Length; ++i)
+			for (int i = 0; i < data.Count; ++i)
 			{
 				sum += data[i];
 			}
@@ -58,8 +63,8 @@ namespace MicroBenchmarks
 		public int ForLoopCachedLength()
 		{
 			var sum = 0;
-			int length = data.Length;
-			for (int i = 0; i < length; i++)
+			int count = data.Count;
+			for (int i = 0; i < count; i++)
 			{
 				sum += data[i];
 			}
@@ -71,7 +76,7 @@ namespace MicroBenchmarks
 		public int ForLoopUnroll4()
 		{
 			var sum = 0;
-			for (int i = 0; i < data.Length; i += 4)
+			for (int i = 0; i < data.Count; i += 4)
 			{
 				sum += data[i];
 				sum += data[i + 1];
