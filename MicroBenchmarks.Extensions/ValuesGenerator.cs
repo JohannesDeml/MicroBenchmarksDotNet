@@ -84,6 +84,8 @@ namespace BenchmarkDotNet.Extensions
         {
             if (typeof(T) == typeof(char))
                 return (T)(object)(char)random.Next(char.MinValue, char.MaxValue);
+			if (typeof(T) == typeof(byte))
+				return (T)(object)(byte)random.Next(byte.MaxValue);
             if (typeof(T) == typeof(short))
                 return (T)(object)(short)random.Next(short.MaxValue);
             if (typeof(T) == typeof(ushort))
