@@ -13,30 +13,36 @@ namespace MicroBenchmarks
 		public StringComparison Comparison { get; set; }
 
 		[Params(100)]
-		public int StringLength { get; set; }
+		public int SearchStringLength { get; set; }
+		private const int TotalStringLength = 500;
 
-		private const string TargetString = "Target42";
+		private string searchString;
 		private string stringDataFail;
 		private string stringDataSuccess;
+
+
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			int randomLength = StringLength - TargetString.Length;
-			stringDataFail = $"{ValuesGenerator.GenerateRandomString(randomLength)}{TargetString}";
-			stringDataSuccess = $"{TargetString}{ValuesGenerator.GenerateRandomString(randomLength)}";
+			int randomLength = TotalStringLength - SearchStringLength;
+			searchString = ValuesGenerator.GenerateRandomString(SearchStringLength);
+			stringDataFail = $"{ValuesGenerator.GenerateRandomString(randomLength)}{searchString}";
+			stringDataSuccess = $"{searchString}{ValuesGenerator.GenerateRandomString(randomLength)}";
 		}
 
 		[Benchmark]
+		[BenchmarkCategory("StartsWithFail")]
 		public bool StartsWithStringFail()
 		{
-			return stringDataFail.StartsWith(TargetString, Comparison);
+			return stringDataFail.StartsWith(searchString, Comparison);
 		}
 
 		[Benchmark]
+		[BenchmarkCategory("StartsWithSuccess")]
 		public bool StartsWithStringSuccess()
 		{
-			return stringDataSuccess.StartsWith(TargetString, Comparison);
+			return stringDataSuccess.StartsWith(searchString, Comparison);
 		}
 	}
 }
