@@ -47,6 +47,9 @@ namespace MicroBenchmarks
 			return sum;
 		}
 
+		/// <summary>
+		/// Does not make a difference, since the other loops wil also be changed to preincrement by the compiler
+		/// </summary>
 		[Benchmark]
 		public int ForLoopPreIncrement()
 		{
@@ -67,6 +70,20 @@ namespace MicroBenchmarks
 			for (int i = 0; i < count; i++)
 			{
 				sum += data[i];
+			}
+
+			return sum;
+		}
+
+		[Benchmark]
+		public int ForLoopLocalVariable()
+		{
+			var sum = 0;
+
+			List<byte> localData = data;
+			for (int i = 0; i < localData.Count; i++)
+			{
+				sum += localData[i];
 			}
 
 			return sum;
