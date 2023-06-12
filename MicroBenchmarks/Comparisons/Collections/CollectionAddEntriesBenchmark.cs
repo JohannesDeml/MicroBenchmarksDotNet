@@ -15,6 +15,10 @@ using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
+	/// <summary>
+	/// Add and clear entries in a collection, shows overhead of adding entries that need to have the hash calculated
+	/// See also <see cref="CollectionInstantiationBenchmark"/> for a similar benchmark
+	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class CollectionAddEntriesBenchmark
 	{

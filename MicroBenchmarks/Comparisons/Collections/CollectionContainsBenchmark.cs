@@ -148,7 +148,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public bool LinkedListContains()
 		{
-			return list.Contains(target);
+			return linkedList.Contains(target);
 		}
 
 		[Benchmark]
