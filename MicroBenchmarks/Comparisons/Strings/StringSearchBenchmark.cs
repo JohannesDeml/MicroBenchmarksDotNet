@@ -30,7 +30,7 @@ namespace MicroBenchmarks
 		{
 			// Make sure distance to target is the same from start and end of the string
 			stringData = ValuesGenerator.GenerateRandomString(LengthToTarget * 2);
-			stringData.Insert(LengthToTarget, TargetString);
+			stringData = stringData.Insert(LengthToTarget, TargetString);
 		}
 
 		[Benchmark]
