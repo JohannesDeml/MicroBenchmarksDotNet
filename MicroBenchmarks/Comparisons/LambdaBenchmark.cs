@@ -26,8 +26,8 @@ namespace MicroBenchmarks
 
 		[Params(1)]
 		public int SecondValue { get; set; }
-		private int result;
 
+		private int result;
 		private Func<int, int, int> preparedLambdaFunction;
 		private Action<int, int> preparedAction;
 
@@ -51,6 +51,12 @@ namespace MicroBenchmarks
 		private void AddWithoutReturn(int a, int b)
 		{
 			result = a + b;
+		}
+
+		[Benchmark]
+		public int InlinedCalculation()
+		{
+			return FirstValue + SecondValue;
 		}
 
 		[Benchmark]
