@@ -18,6 +18,7 @@ namespace MicroBenchmarks
 		private int[] array;
 		private IEnumerable<int> enumerable;
 		private List<int> list;
+		private IReadOnlyList<int> readOnlyList;
 		private ReadOnlyCollection<int> readOnlyCollection;
 		private LinkedList<int> linkedList;
 		private List<int> listSorted;
@@ -33,6 +34,7 @@ namespace MicroBenchmarks
 			array = ValuesGenerator.ArrayOfUniqueValues<int>(CollectionLength);
 			enumerable = array;
 			list = new List<int>(array);
+			readOnlyList = list;
 			readOnlyCollection = new ReadOnlyCollection<int>(array);
 			linkedList = new LinkedList<int>(array);
 			listSorted = new List<int>(array);
@@ -43,20 +45,6 @@ namespace MicroBenchmarks
 			sortedDictionary = new SortedDictionary<int, int>(dictionary);
 
 			target = array[CollectionLength / 2];
-		}
-
-		[Benchmark]
-		public bool ArrayForLoopContains()
-		{
-			for (int i = 0; i < array.Length; i++)
-			{
-				if (array[i] == target)
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 
 		[Benchmark]
@@ -77,34 +65,6 @@ namespace MicroBenchmarks
 		public bool ArrayLinqContains()
 		{
 			return array.Contains(target);
-		}
-
-		[Benchmark]
-		public bool EnumerableForEachLoopContains()
-		{
-			foreach (int value in enumerable)
-			{
-				if (value == target)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		[Benchmark]
-		public bool ListForLoopContains()
-		{
-			for (int i = 0; i < list.Count; i++)
-			{
-				if (list[i] == target)
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 
 		[Benchmark]
@@ -137,6 +97,26 @@ namespace MicroBenchmarks
 		public bool ListContains()
 		{
 			return list.Contains(target);
+		}
+
+		[Benchmark]
+		public bool EnumerableForEachLoopContains()
+		{
+			foreach (int value in enumerable)
+			{
+				if (value == target)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		[Benchmark]
+		public bool ReadOnlyListContains()
+		{
+			return readOnlyList.Contains(target);
 		}
 
 		[Benchmark]

@@ -28,13 +28,15 @@ namespace MicroBenchmarks
 		public int SecondValue { get; set; }
 
 		private int result;
-		private Func<int, int, int> preparedLambdaFunction;
+		private Func<int, int, int> preparedFuncDelegate;
 		private Action<int, int> preparedAction;
+		private Action preparedLambdaAction;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			preparedLambdaFunction = new Func<int, int, int>((a, b) => a + b);
+			preparedFuncDelegate = (a, b) => a + b;
+			preparedLambdaAction = () => { result = FirstValue + SecondValue; };
 			preparedAction = AddWithoutReturn;
 		}
 
@@ -84,24 +86,16 @@ namespace MicroBenchmarks
 
 
 		[Benchmark]
-		public int PreparedLambdaFunctionInvocation()
+		public int PreparedFuncDelegateInvocation()
 		{
-			return preparedLambdaFunction.Invoke(FirstValue,SecondValue);
+			return preparedFuncDelegate.Invoke(FirstValue,SecondValue);
 		}
 
 		[Benchmark]
-		public int LambdaFunctionInvocation()
+		public int FuncDelegateInvocation()
 		{
 			var lambda = new Func<int, int, int>((a, b) => a + b);
 			return lambda.Invoke(FirstValue, SecondValue);
-		}
-
-		[Benchmark]
-		public int LambdaInvocation()
-		{
-			Action lambda = () => { result = FirstValue + SecondValue; };
-			lambda.Invoke();
-			return result;
 		}
 
 		[Benchmark]
@@ -116,6 +110,21 @@ namespace MicroBenchmarks
 		{
 			Action<int, int> action = AddWithoutReturn;
 			action.Invoke(FirstValue, SecondValue);
+			return result;
+		}
+
+		[Benchmark]
+		public int PreparedLambdaInvocation()
+		{
+			preparedLambdaAction.Invoke();
+			return result;
+		}
+
+		[Benchmark]
+		public int LambdaInvocation()
+		{
+			Action lambda = () => { result = FirstValue + SecondValue; };
+			lambda.Invoke();
 			return result;
 		}
 

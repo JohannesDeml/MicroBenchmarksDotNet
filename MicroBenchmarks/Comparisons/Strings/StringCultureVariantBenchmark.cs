@@ -6,10 +6,11 @@ using MicroBenchmarks.Extensions;
 namespace MicroBenchmarks
 {
 	[Config(typeof(DefaultBenchmarkConfig))]
-	public class StringCultureVariantBenchmark
+	public class StringComparisonBenchmark
 	{
 		[Params(StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase,
-			StringComparison.InvariantCulture, StringComparison.InvariantCultureIgnoreCase)]
+			StringComparison.InvariantCulture, StringComparison.InvariantCultureIgnoreCase,
+			StringComparison.CurrentCulture, StringComparison.CurrentCultureIgnoreCase)]
 		public StringComparison Comparison { get; set; }
 
 		[Params(100)]

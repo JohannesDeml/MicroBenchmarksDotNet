@@ -25,14 +25,14 @@ namespace MicroBenchmarks
 	{
 		// Needs to be a multiple of 4 to support ForLoopUnroll4
 		[Params(100, 100_000)]
-		public int ArraySize { get; set; }
+		public int ListSize { get; set; }
 
 		private List<byte> data;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
-			data = new List<byte>(ValuesGenerator.Array<byte>(ArraySize));
+			data = new List<byte>(ValuesGenerator.Array<byte>(ListSize));
 		}
 
 		[Benchmark(Baseline = true)]

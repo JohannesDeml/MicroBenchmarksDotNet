@@ -62,9 +62,8 @@ namespace MicroBenchmarks
 			return 1;
 		}
 
-		// Only this benchmark has the string creation overhead
 		[Benchmark]
-		public int LogPreparedStringFormat()
+		public int LogPreparedString()
 		{
 			string preparedMessage = $"firstParam: {firstParam}, secondParam: {secondParam}, thirdParam:{thirdParam}";
 			Log(preparedMessage);
