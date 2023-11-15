@@ -25,7 +25,7 @@ namespace MicroBenchmarks.Extensions
 			var runtimes = Environment.GetEnvironmentVariable("TARGET_RUNTIMES");
 			if (runtimes == null)
 			{
-				AddJob(baseJob.WithRuntime(CoreRuntime.Core60));
+				AddJob(baseJob.WithRuntime(CoreRuntime.Core80));
 			}
 			else
 			{
@@ -45,8 +45,20 @@ namespace MicroBenchmarks.Extensions
 				var runtime = runtimeArray[i].Trim();
 				switch (runtime)
 				{
+					case "Core90":
+						AddJob(baseJob.WithRuntime(CoreRuntime.Core90));
+						break;
+					case "Aot90":
+						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net90));
+						break;
+					case "Core80":
+						AddJob(baseJob.WithRuntime(CoreRuntime.Core80));
+						break;
+					case "Aot80":
+						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net80));
+						break;
 					case "Core70":
-						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net70));
+						AddJob(baseJob.WithRuntime(CoreRuntime.Core70));
 						break;
 					case "Aot70":
 						AddJob(baseJob.WithRuntime(NativeAotRuntime.Net70));

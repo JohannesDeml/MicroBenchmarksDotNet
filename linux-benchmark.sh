@@ -4,7 +4,7 @@
 # Build targets: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 
 # Needs to be compiled as an exe, since benchmarkdotnet .netcore builds can't run mono targets 
-dotnet build --configuration Release --framework net6.0 --output ./bin/MicroBenchmarks-Linux/
+dotnet build --configuration Release --framework net8.0 --output ./bin/MicroBenchmarks-Linux/
 mono ./bin/MicroBenchmarks-Linux/MicroBenchmarks.exe
 
 echo "--- Benchmark finished ---"
