@@ -20,7 +20,17 @@ namespace MicroBenchmarks.Extensions
 	{
 		public DefaultBenchmarkConfig()
 		{
-			var baseJob = DefineBaseJob();
+			var precise = Environment.GetEnvironmentVariable("HIGH_PRECISION");
+
+			Job baseJob;
+			if (precise == null || precise != "true")
+			{
+				baseJob = DefineFastBaseJob();
+			}
+			else
+			{
+				baseJob = DefineHighPrecisionBaseJob();
+			}
 
 			var runtimes = Environment.GetEnvironmentVariable("TARGET_RUNTIMES");
 			if (runtimes == null)
@@ -98,7 +108,11 @@ namespace MicroBenchmarks.Extensions
 			AddJob(baseJob.WithRuntime(unityMonoRuntime));
 		}
 
-		protected virtual Job DefineBaseJob()
+		/// <summary>
+		/// Fast in execution and good enough to get a rough performance estimate
+		/// Use this setting in development to get fast feedback
+		/// </summary>
+		protected virtual Job DefineFastBaseJob()
 		{
 			return Job.Default
 				.WithUnrollFactor(16)
@@ -106,6 +120,19 @@ namespace MicroBenchmarks.Extensions
 				.WithIterationTime(TimeInterval.FromMilliseconds(250))
 				.WithMinIterationCount(15)
 				.WithMaxIterationCount(20)
+				.WithGcServer(true)
+				.WithGcConcurrent(true)
+				.WithGcForce(true)
+				.WithPlatform(Platform.AnyCpu);
+		}
+
+		/// <summary>
+		/// Slower in execution, but more precise results that are stable throughout multiple runs
+		/// Use this setting if you want to present data to others
+		/// </summary>
+		private Job DefineHighPrecisionBaseJob()
+		{
+			return Job.Default
 				.WithGcServer(true)
 				.WithGcConcurrent(true)
 				.WithGcForce(true)

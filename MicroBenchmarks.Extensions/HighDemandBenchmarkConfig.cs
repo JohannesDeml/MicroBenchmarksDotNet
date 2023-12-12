@@ -16,7 +16,7 @@ namespace MicroBenchmarks.Extensions
 {
 	public class HighDemandBenchmarkConfig : DefaultBenchmarkConfig
 	{
-		protected override Job DefineBaseJob()
+		protected override Job DefineFastBaseJob()
 		{
 			return Job.Default
 				.WithStrategy(RunStrategy.Monitoring)

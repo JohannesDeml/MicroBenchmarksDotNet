@@ -4,21 +4,10 @@
 
 :: Target all runtimes
 SET TARGET_RUNTIMES=Core80,Core60,Mono
+:: Create stable results
+SET HIGH_PRECISION=true
 :: Define your mono path you want to test, or remove this line to use the default mono installation
-SET MONO_UNITY=C:\Program Files\Unity\2020.3.38f1\Editor\Data\MonoBleedingEdge\bin\mono.exe
+SET MONO_UNITY=C:\Program Files\Unity\2022.3.15f1\Editor\Data\MonoBleedingEdge\bin\mono.exe
 
-dotnet build --configuration Release --framework net6.0 --output .\bin\MicroBenchmarks-Windows\
-.\bin\MicroBenchmarks-Windows\MicroBenchmarks
-
-echo off
-Echo --- Benchmarks finished ---
-Echo Save current process list
-:: Folder should exist, just to be sure create it if it does not
-if not exist "BenchmarkDotNet.Artifacts" mkdir BenchmarkDotNet.Artifacts
-
-echo on
-:: Store currently running processes
-tasklist /V /FO CSV > "BenchmarkDotNet.Artifacts\running-processes.csv"
-tasklist /V > "BenchmarkDotNet.Artifacts\running-processes.txt"
-
-PAUSE
+:: Build & run the benchmark
+.\win-benchmark.bat
