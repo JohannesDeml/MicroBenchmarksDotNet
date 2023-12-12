@@ -7,8 +7,8 @@
         <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
         <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
         <RootNamespace>MicroBenchmarks</RootNamespace>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
-        <FileVersion>1.1.0</FileVersion>
+        <AssemblyVersion>1.2.0</AssemblyVersion>
+        <FileVersion>1.2.0</FileVersion>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(IsWindows)'=='true'">
@@ -26,7 +26,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.11" />
     </ItemGroup>
     
     <ItemGroup>
