@@ -125,7 +125,7 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public int LinqAggregate()
 		{
-			return data.Aggregate(0, (current, i) => current + i);
+			return data.Aggregate(0, (sum, i) => sum + i);
 		}
 	}
 }
