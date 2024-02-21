@@ -19,6 +19,7 @@ namespace MicroBenchmarks
 	/// This benchmark takes a look at which point code stripping happens for conditional methods
 	/// Good news is, that for all net-core 3.1, .NET 4.8, .NET5 and mono, the stripping already happens
 	/// for the method input parameter.
+	/// The stripping does not happen for prepared strings or wrapping methods.
 	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class ConditionalLoggingBenchmark
@@ -61,6 +62,17 @@ namespace MicroBenchmarks
 				firstParam, secondParam, thirdParam));
 			return 1;
 		}
+
+		[Benchmark]
+		public int LogStringWrapped()
+		{
+			LogWrapped(string.Format("firstParam: {0}, secondParam: {1}, thirdParam:{2}",
+				firstParam, secondParam, thirdParam));
+			return 1;
+		}
+
+		public void LogWrapped(string message) => Log(message);
+
 
 		[Benchmark]
 		public int LogPreparedString()
