@@ -18,6 +18,7 @@ namespace MicroBenchmarks
 {
 	/// <summary>
 	/// Compares different loop logics for an array to sum up all values
+	/// including Linq and ZLinq (<see href="https://github.com/Cysharp/ZLinq"/>)
 	/// Interesting to compare the results to <see cref="LoopListSumComparisonBenchmark"/>
 	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]

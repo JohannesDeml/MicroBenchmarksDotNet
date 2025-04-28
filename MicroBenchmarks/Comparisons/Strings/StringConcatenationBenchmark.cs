@@ -2,12 +2,14 @@
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Extensions;
+using Cysharp.Text;
 using MicroBenchmarks.Extensions;
 
 namespace MicroBenchmarks
 {
 	/// <summary>
 	/// Compare classic string concatenation with string builder (with new instances created in each method)
+	/// Additionally compare everything with ZString (<see href="https://github.com/Cysharp/ZString"/>)
 	/// </summary>
 	[Config(typeof(DefaultBenchmarkConfig))]
 	public class StringConcatenationBenchmark
@@ -67,6 +69,42 @@ namespace MicroBenchmarks
 			}
 
 			return sb.ToString();
+		}
+
+		[Benchmark]
+		public string ZStringConcatenation()
+		{
+			return ZString.Concat(stringArray);
+		}
+
+		[Benchmark]
+		public string ZStringBuilderAppend()
+		{
+			using (Utf16ValueStringBuilder sb = ZString.CreateStringBuilder())
+			{
+				for (var i = 0; i < stringArray.Length; i++)
+				{
+					var part = stringArray[i];
+					sb.Append(part);
+				}
+
+				return sb.ToString();
+			}
+		}
+
+		[Benchmark]
+		public string ZStringBuilderInsert()
+		{
+			using (Utf16ValueStringBuilder sb = ZString.CreateStringBuilder())
+			{
+				for (var i = stringArray.Length - 1; i >= 0; i--)
+				{
+					var part = stringArray[i];
+					sb.Insert(0, part);
+				}
+
+				return sb.ToString();
+			}
 		}
 	}
 }
