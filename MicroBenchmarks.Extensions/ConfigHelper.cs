@@ -15,6 +15,7 @@ using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Reports;
 using Perfolizer.Horology;
+using Perfolizer.Metrology;
 
 namespace MicroBenchmarks.Extensions
 {

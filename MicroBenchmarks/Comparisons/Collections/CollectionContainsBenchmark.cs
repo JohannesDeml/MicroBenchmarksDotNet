@@ -16,15 +16,17 @@ namespace MicroBenchmarks
 		[Params(10, 10_000)] public int CollectionLength { get; set; }
 
 		private int[] array;
-		private IEnumerable<int> enumerable;
+		private IEnumerable<int> enumerableInterface;
 		private List<int> list;
-		private IReadOnlyList<int> readOnlyList;
+		private IReadOnlyList<int> readOnlyListInterface;
 		private ReadOnlyCollection<int> readOnlyCollection;
+		private IReadOnlyCollection<int> readOnlyCollectionInterface;
 		private LinkedList<int> linkedList;
 		private List<int> listSorted;
 		private SortedSet<int> sortedSet;
 		private HashSet<int> hashSet;
 		private Dictionary<int, int> dictionary;
+		private IDictionary<int, int> dictionaryInterface;
 		private SortedDictionary<int, int> sortedDictionary;
 		private int target;
 
@@ -32,16 +34,18 @@ namespace MicroBenchmarks
 		public void PrepareBenchmark()
 		{
 			array = ValuesGenerator.ArrayOfUniqueValues<int>(CollectionLength);
-			enumerable = array;
+			enumerableInterface = array;
 			list = new List<int>(array);
-			readOnlyList = list;
+			readOnlyListInterface = list;
 			readOnlyCollection = new ReadOnlyCollection<int>(array);
+			readOnlyCollectionInterface = array;
 			linkedList = new LinkedList<int>(array);
 			listSorted = new List<int>(array);
 			listSorted.Sort();
 			sortedSet = new SortedSet<int>(array);
 			hashSet = new HashSet<int>(array);
 			dictionary = list.ToDictionary(x => x, x => x);
+			dictionaryInterface = dictionary;
 			sortedDictionary = new SortedDictionary<int, int>(dictionary);
 
 			target = array[CollectionLength / 2];
@@ -100,9 +104,9 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool EnumerableForEachLoopContains()
+		public bool EnumerableInterfaceForEachLoopContains()
 		{
-			foreach (int value in enumerable)
+			foreach (int value in enumerableInterface)
 			{
 				if (value == target)
 				{
@@ -114,15 +118,21 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
-		public bool ReadOnlyListContains()
+		public bool ReadOnlyListInterfaceContains()
 		{
-			return readOnlyList.Contains(target);
+			return readOnlyListInterface.Contains(target);
 		}
 
 		[Benchmark]
 		public bool ReadOnlyCollectionContains()
 		{
 			return readOnlyCollection.Contains(target);
+		}
+
+		[Benchmark]
+		public bool ReadOnlyCollectionInterfaceContains()
+		{
+			return readOnlyCollectionInterface.Contains(target);
 		}
 
 		[Benchmark]
@@ -160,6 +170,12 @@ namespace MicroBenchmarks
 		public bool DictionaryContainsKey()
 		{
 			return dictionary.ContainsKey(target);
+		}
+
+		[Benchmark]
+		public bool DictionaryInterfaceContainsKey()
+		{
+			return dictionaryInterface.ContainsKey(target);
 		}
 
 		[Benchmark]

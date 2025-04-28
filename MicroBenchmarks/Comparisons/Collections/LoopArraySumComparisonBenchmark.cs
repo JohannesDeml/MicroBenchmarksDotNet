@@ -12,6 +12,7 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Extensions;
 using MicroBenchmarks.Extensions;
+using ZLinq;
 
 namespace MicroBenchmarks
 {
@@ -116,10 +117,23 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
+		public int ZLinqSum()
+		{
+			return data.AsValueEnumerable().Sum(b => (int)b);
+		}
+
+		[Benchmark]
 		public int LinqSum()
 		{
 			return data.Sum(b => (int)b);
 		}
+
+		[Benchmark]
+		public int ZLinqAggregate()
+		{
+			return data.AsValueEnumerable().Aggregate(0, (sum, i) => sum + i);
+		}
+
 
 		[Benchmark]
 		public int LinqAggregate()
