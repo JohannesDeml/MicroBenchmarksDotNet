@@ -16,11 +16,13 @@ namespace MicroBenchmarks
 		[Params(10, 10_000)] public int CollectionLength { get; set; }
 
 		private int[] data;
+		private HashSet<int> dataAsHashSet;
 
 		[GlobalSetup]
 		public void PrepareBenchmark()
 		{
 			data = ValuesGenerator.ArrayOfUniqueValues<int>(CollectionLength);
+			dataAsHashSet = new HashSet<int>(data);
 		}
 
 		[Benchmark]
@@ -92,6 +94,14 @@ namespace MicroBenchmarks
 		}
 
 		[Benchmark]
+		public List<int> ListConstructorHashSet()
+		{
+			List<int> list = new List<int>(dataAsHashSet);
+
+			return list;
+		}
+
+		[Benchmark]
 		public HashSet<int> HashSetCapacityForLoop()
 		{
 			HashSet<int> hashSet = new HashSet<int>(CollectionLength);
@@ -107,6 +117,14 @@ namespace MicroBenchmarks
 		public HashSet<int> HashSetConstructor()
 		{
 			HashSet<int> hashSet = new HashSet<int>(data);
+
+			return hashSet;
+		}
+
+		[Benchmark]
+		public HashSet<int> HashSetConstructorWithHashSet()
+		{
+			HashSet<int> hashSet = new HashSet<int>(dataAsHashSet);
 
 			return hashSet;
 		}
