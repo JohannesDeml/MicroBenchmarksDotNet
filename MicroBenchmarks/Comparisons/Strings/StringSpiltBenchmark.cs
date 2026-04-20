@@ -39,7 +39,12 @@ namespace MicroBenchmarks
 		[Benchmark]
 		public string[] SplitByString()
 		{
+#if NET48
+			// Not supported
+			return new string[0];
+#else
 			return stringData.Split(TargetString);
+#endif
 		}
 	}
 }

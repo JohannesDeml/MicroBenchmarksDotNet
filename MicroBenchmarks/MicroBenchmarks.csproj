@@ -8,7 +8,7 @@
         <RootNamespace>MicroBenchmarks</RootNamespace>
         <AssemblyVersion>1.2.0</AssemblyVersion>
         <FileVersion>1.2.0</FileVersion>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFrameworks>net10.0;net8.0;net6.0</TargetFrameworks>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(IsWindows)'=='true'">
